@@ -3,7 +3,12 @@ public class Sudoku {
     public static void main(String[] args){
         SudokuBoard board = new SudokuBoard();
         board.showBoard();
-        board.fillBoard();
+       /* board.fillBoard();
+        System.out.println("");
+        System.out.println("");
+        board.showBoard(); */
+
+        board.randomFillBoard();
         System.out.println("");
         System.out.println("");
         board.showBoard();
