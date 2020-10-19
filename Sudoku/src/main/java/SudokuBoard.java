@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class SudokuBoard {
     private final int[][] board = new int[9][9];
 
@@ -106,6 +108,21 @@ public class SudokuBoard {
         }
         System.out.println("-------------------------");
     }
+    private int generateSudokuFigures() {
+        Random rand = new Random();
+        int figure = 0;
+        figure = rand.nextInt(9) + 1;
+        return figure;
+    }
 
+    public void randomFillBoard(){
+        int column = 0;
+        for(int i = 0; i < 10; i++){
+            column = generateSudokuFigures();
+            do {
+                board[i][column] = generateSudokuFigures();
+            } while(!viablityTest(i, column));
+        }
+    }
 }
 
