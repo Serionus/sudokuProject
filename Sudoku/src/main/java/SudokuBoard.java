@@ -40,7 +40,7 @@ public class SudokuBoard {
                         }
 
                         board[i][j] = k;
-                        if (viablityTest(i, j)) {
+                        if (viabilityTest(i, j)) {
                             k = 1;
                             break;
                         }
@@ -63,7 +63,7 @@ public class SudokuBoard {
         return result;
     }
 
-    public boolean viablityTest(int row, int column) {
+    public boolean viabilityTest(int row, int column) {
 
         for (int i = 0; i < 9; i++) {
             if (i == row) {
@@ -132,7 +132,7 @@ public class SudokuBoard {
 
             do {
                 board[i][column] = generateSudokuFigures();
-            } while(!viablityTest(i, column));
+            } while(!viabilityTest(i, column));
         }
 
     }
