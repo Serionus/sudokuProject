@@ -1,47 +1,57 @@
 public class SudokuBoard {
-    private int board[][] = new int[9][9];
+    private final int[][] board = new int[9][9];
 
     public void fillBoard() {
-
+        int[][] oldBoard = new int[9][9];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                oldBoard[i][j] = board[i][j];
+            }
+        }
         int k = 1;
 
-        for(int i = 0; i < 9; i++) {
+        for (int i = 0; i < 9; i++) {
 
-            for(int j = 0; j < 9; j++) {
+            for (int j = 0; j < 9; j++) {
 
-            //sprawdź czy dane pole nalezy do poczatkowo wypelnionych
+                if (oldBoard[i][j] == 0) {
 
-                while(true){
+                    while (true) {
 
-                    if(k > 9){
-                        board[i][j]=0;
+                        if (k > 9) {   // jeżeli do danego pola nie pasuje żadna liczba cofamy się do poprzedniego pola zwiększając jego wartość o jeden
+                            board[i][j] = 0;
 
-                        if(j==0){
-                            k = board[i-1][8]+1;
-                            i--;
-                            j = 7;
-                        }else {
-                            k = board[i][j-1] + 1;
-                            j=j-2;
+                            int[] params = getLastCell(i, j);
+                            k = board[params[0]][params[1]] + 1;
+                            i = params[0];
+                            j = params[1] - 1;
+
+                            break;
                         }
 
-                        break;
+                        board[i][j] = k;
+                        if (viablityTest(i, j)) {
+                            k = 1;
+                            break;
+                        }
+                        k++;
                     }
-
-                    board[i][j] = k;
-                    if(viablityTest(i, j)){
-
-                        k = 1;
-                        break;
-                    }
-                    k++;
                 }
             }
         }
     }
 
-
-  //  public getNextCell
+    private int[] getLastCell(int i, int j) {
+        int[] result = new int[2];
+        if (j == 0) {
+            result[0] = i - 1;
+            result[1] = 8;
+        } else {
+            result[0] = i;
+            result[1] = j - 1;
+        }
+        return result;
+    }
 
     private boolean viablityTest(int row, int column) {
 
@@ -68,7 +78,7 @@ public class SudokuBoard {
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if ((boxRow * 3)+i == row && (boxCol * 3) + j == column) {
+                if ((boxRow * 3) + i == row && (boxCol * 3) + j == column) {
                     continue;
                 }
                 if (board[(boxRow * 3) + i][(boxCol * 3) + j] == board[row][column]) {
@@ -80,24 +90,22 @@ public class SudokuBoard {
         return true;
     }
 
-    public void showBoard(){
-        for(int i = 0; i < 9 ; i++){
-            if(i%3==0){
+    public void showBoard() {
+        for (int i = 0; i < 9; i++) {
+            if (i % 3 == 0) {
                 System.out.println("-------------------------");
             }
-            for(int j = 0 ; j < 9 ; j++){
-                if(j%3 == 0){
+            for (int j = 0; j < 9; j++) {
+                if (j % 3 == 0) {
                     System.out.print("| ");
                 }
                 System.out.print(board[i][j] + " ");
             }
             System.out.print("|");
-            System.out.println("");
+            System.out.println();
         }
         System.out.println("-------------------------");
     }
 
-
 }
-
 
