@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class SudokuBoard {
     private int board[][] = new int[9][9];
 
@@ -5,31 +7,31 @@ public class SudokuBoard {
 
         int k = 1;
 
-        for(int i = 0; i < 9; i++) {
+        for (int i = 0; i < 9; i++) {
 
-            for(int j = 0; j < 9; j++) {
+            for (int j = 0; j < 9; j++) {
 
-            //sprawdź czy dane pole nalezy do poczatkowo wypelnionych
+                //sprawdź czy dane pole nalezy do poczatkowo wypelnionych
 
-                while(true){
+                while (true) {
 
-                    if(k > 9){
-                        board[i][j]=0;
+                    if (k > 9) {
+                        board[i][j] = 0;
 
-                        if(j==0){
-                            k = board[i-1][8]+1;
+                        if (j == 0) {
+                            k = board[i - 1][8] + 1;
                             i--;
                             j = 7;
-                        }else {
-                            k = board[i][j-1] + 1;
-                            j=j-2;
+                        } else {
+                            k = board[i][j - 1] + 1;
+                            j = j - 2;
                         }
 
                         break;
                     }
 
                     board[i][j] = k;
-                    if(viablityTest(i, j)){
+                    if (viablityTest(i, j)) {
 
                         k = 1;
                         break;
@@ -41,7 +43,7 @@ public class SudokuBoard {
     }
 
 
-  //  public getNextCell
+    //  public getNextCell
 
     private boolean viablityTest(int row, int column) {
 
@@ -68,7 +70,7 @@ public class SudokuBoard {
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if ((boxRow * 3)+i == row && (boxCol * 3) + j == column) {
+                if ((boxRow * 3) + i == row && (boxCol * 3) + j == column) {
                     continue;
                 }
                 if (board[(boxRow * 3) + i][(boxCol * 3) + j] == board[row][column]) {
@@ -80,13 +82,13 @@ public class SudokuBoard {
         return true;
     }
 
-    public void showBoard(){
-        for(int i = 0; i < 9 ; i++){
-            if(i%3==0){
+    public void showBoard() {
+        for (int i = 0; i < 9; i++) {
+            if (i % 3 == 0) {
                 System.out.println("-------------------------");
             }
-            for(int j = 0 ; j < 9 ; j++){
-                if(j%3 == 0){
+            for (int j = 0; j < 9; j++) {
+                if (j % 3 == 0) {
                     System.out.print("| ");
                 }
                 System.out.print(board[i][j] + " ");
@@ -97,7 +99,22 @@ public class SudokuBoard {
         System.out.println("-------------------------");
     }
 
+    private int generateSudokuFigures() {
+        Random rand = new Random();
+        int figure = 0;
+        figure = rand.nextInt(9) + 1;
+        return figure;
+    }
 
+    public void randomFillBoard(){
+        int column = 0;
+        for(int i = 0; i < 10; i++){
+            column = generateSudokuFigures();
+            do {
+                board[i][column] = generateSudokuFigures();
+            } while(!viablityTest(i, column));
+        }
+    }
 }
 
 
