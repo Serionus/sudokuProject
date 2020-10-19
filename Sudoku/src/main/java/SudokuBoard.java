@@ -5,42 +5,43 @@ public class SudokuBoard {
 
         int k = 1;
 
-        for(int i = 0; i < 2; i++) {
+        for(int i = 0; i < 9; i++) {
 
             for(int j = 0; j < 9; j++) {
 
-
+            //sprawdź czy dane pole nalezy do poczatkowo wypelnionych
 
                 while(true){
-                    board[i][j] = k;
-                    if(viablityTest(i, j)){
-                        k = 1;
-                        break;
-                    }
 
-                    if(k == 10){
+                    if(k > 9){
+                        board[i][j]=0;
 
-                        if(j>8){
+                        if(j==0){
                             k = board[i-1][8]+1;
                             i--;
                             j = 7;
                         }else {
-                            k = board[i][j] + 1;
+                            k = board[i][j-1] + 1;
                             j=j-2;
                         }
 
                         break;
                     }
 
+                    board[i][j] = k;
+                    if(viablityTest(i, j)){
+
+                        k = 1;
+                        break;
+                    }
                     k++;
                 }
-
             }
-
         }
     }
 
 
+  //  public getNextCell
 
     private boolean viablityTest(int row, int column) {
 
