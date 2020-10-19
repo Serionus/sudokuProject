@@ -63,7 +63,7 @@ public class SudokuBoard {
         return result;
     }
 
-    private boolean viablityTest(int row, int column) {
+    public boolean viablityTest(int row, int column) {
 
         for (int i = 0; i < 9; i++) {
             if (i == row) {
@@ -137,4 +137,5 @@ public class SudokuBoard {
 
     }
 }
+
 
