@@ -23,7 +23,15 @@ public class SudokuBoard {
                         if (k > 9) {   // jeżeli do danego pola nie pasuje żadna liczba cofamy się do poprzedniego pola zwiększając jego wartość o jeden
                             board[i][j] = 0;
 
+
+
+
                             int[] params = getLastCell(i, j);
+
+                            while (oldBoard[params[0]][params[1]] != 0){
+                                params = getLastCell(params[0], params[1]);
+                            }
+
                             k = board[params[0]][params[1]] + 1;
                             i = params[0];
                             j = params[1] - 1;
@@ -108,6 +116,7 @@ public class SudokuBoard {
         }
         System.out.println("-------------------------");
     }
+
     private int generateSudokuFigures() {
         Random rand = new Random();
         int figure = 0;
@@ -117,12 +126,15 @@ public class SudokuBoard {
 
     public void randomFillBoard(){
         int column = 0;
-        for(int i = 0; i < 10; i++){
-            column = generateSudokuFigures();
+
+        for(int i = 0; i < 9; i++){
+            column = generateSudokuFigures()-1;
+
             do {
                 board[i][column] = generateSudokuFigures();
             } while(!viablityTest(i, column));
         }
+
     }
 }
 
