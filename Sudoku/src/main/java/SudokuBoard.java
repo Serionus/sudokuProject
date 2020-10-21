@@ -4,6 +4,7 @@ public class SudokuBoard {
     private final int[][] board = new int[9][9];
 
     public void fillBoard() {
+        randomFillBoard();
         int[][] oldBoard = new int[9][9];
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
@@ -20,16 +21,13 @@ public class SudokuBoard {
 
                     while (true) {
 
-                        if (k > 9) {   // jeżeli do danego pola nie pasuje żadna liczba cofamy się do poprzedniego pola zwiększając jego wartość o jeden
+                        if (k > 9) { //cofamy się o jedną kolumnę lub rząd kiedy wartość nie pasuje
                             board[i][j] = 0;
 
+                            int[] params = getPreviousCell(i, j);
 
-
-
-                            int[] params = getLastCell(i, j);
-
-                            while (oldBoard[params[0]][params[1]] != 0){
-                                params = getLastCell(params[0], params[1]);
+                            while (oldBoard[params[0]][params[1]] != 0) {
+                                params = getPreviousCell(params[0], params[1]);
                             }
 
                             k = board[params[0]][params[1]] + 1;
@@ -49,9 +47,10 @@ public class SudokuBoard {
                 }
             }
         }
+        showBoard();
     }
 
-    private int[] getLastCell(int i, int j) {
+    private int[] getPreviousCell(int i, int j) {
         int[] result = new int[2];
         if (j == 0) {
             result[0] = i - 1;
@@ -119,23 +118,33 @@ public class SudokuBoard {
 
     private int generateSudokuFigures() {
         Random rand = new Random();
-        int figure = 0;
-        figure = rand.nextInt(9) + 1;
-        return figure;
+        return rand.nextInt(9) + 1;
     }
 
-    public void randomFillBoard(){
-        int column = 0;
-
-        for(int i = 0; i < 9; i++){
-            column = generateSudokuFigures()-1;
+    public void randomFillBoard() {
+        for (int i = 0; i < 9; i++) {
+            int column = generateSudokuFigures() - 1;
 
             do {
                 board[i][column] = generateSudokuFigures();
-            } while(!viabilityTest(i, column));
+            } while (!viabilityTest(i, column));
         }
 
     }
+
+    public int getBoardValue(int i, int j) {
+        return board[i][j];
+    }
+
+    public boolean boardsNotEqual(SudokuBoard boardOne, SudokuBoard boardTwo) {
+        int equalFigures = 0;
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (boardOne.getBoardValue(i, j) == boardTwo.getBoardValue(i, j)) {
+                    equalFigures++;
+                }
+            }
+        }
+        return equalFigures != 81;
+    }
 }
-
-
