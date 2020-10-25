@@ -12,6 +12,7 @@ class SudokuBoardTest {
             }
         }
         SudokuBoard testBoardTwo = new SudokuBoard();
+        testBoardTwo.fillBoard();
         assertTrue(testBoardOne.boardsNotEqual(testBoardOne, testBoardTwo));
     }
 }
