@@ -3,6 +3,8 @@ public class Sudoku {
 
         SudokuBoard board = new SudokuBoard();
         board.showBoard();
+        board.randomFillBoard();
+        board.showBoard();
         board.solveGame();
         board.showBoard();
 
