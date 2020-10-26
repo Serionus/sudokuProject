@@ -4,15 +4,10 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
 
     @Override
     public void solve(SudokuBoard board) {
-
-    }
-
-    public void fillBoard() {
-        randomFillBoard();
         int[][] oldBoard = new int[9][9];
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                oldBoard[i][j] = board[i][j];
+                oldBoard[i][j] = board.get(i, j);
             }
         }
         int k = 1;
@@ -26,7 +21,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
                     while (true) {
 
                         if (k > 9) { //cofamy się o jedną kolumnę lub rząd kiedy wartość nie pasuje
-                            board[i][j] = 0;
+                            board.set(i, j, 0);
 
                             int[] params = getPreviousCell(i, j);
 
@@ -34,15 +29,15 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
                                 params = getPreviousCell(params[0], params[1]);
                             }
 
-                            k = board[params[0]][params[1]] + 1;
+                            k = board.get(params[0], params[1]) + 1;
                             i = params[0];
                             j = params[1] - 1;
 
                             break;
                         }
 
-                        board[i][j] = k;
-                        if (viabilityTest(i, j)) {
+                        board.set(i, j, k);
+                        if (viabilityTest(i, j, board)) {
                             k = 1;
                             break;
                         }
@@ -51,7 +46,6 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
                 }
             }
         }
-        showBoard();
     }
 
     private int[] getPreviousCell(int i, int j) {
@@ -66,13 +60,13 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         return result;
     }
 
-    public boolean viabilityTest(int row, int column) {
+    public boolean viabilityTest(int row, int column, SudokuBoard board) {
 
         for (int i = 0; i < 9; i++) {
             if (i == row) {
                 continue;
             }
-            if (board[row][column] == board[i][column]) {
+            if (board.get(row, column) == board.get(i, column)) {
                 return false;
             }
         }
@@ -81,7 +75,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
             if (i == column) {
                 continue;
             }
-            if (board[row][column] == board[row][i]) {
+            if (board.get(row, column) == board.get(row, i)) {
                 return false;
             }
         }
@@ -94,7 +88,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
                 if ((boxRow * 3) + i == row && (boxCol * 3) + j == column) {
                     continue;
                 }
-                if (board[(boxRow * 3) + i][(boxCol * 3) + j] == board[row][column]) {
+                if (board.get((boxRow * 3) + i, (boxCol * 3) + j) == board.get(row, column)) {
                     return false;
                 }
             }
@@ -102,54 +96,4 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
 
         return true;
     }
-
-    public void showBoard() {
-        for (int i = 0; i < 9; i++) {
-            if (i % 3 == 0) {
-                System.out.println("-------------------------");
-            }
-            for (int j = 0; j < 9; j++) {
-                if (j % 3 == 0) {
-                    System.out.print("| ");
-                }
-                System.out.print(board[i][j] + " ");
-            }
-            System.out.print("|");
-            System.out.println();
-        }
-        System.out.println("-------------------------");
-    }
-
-    private int generateSudokuFigures() {
-        Random rand = new Random();
-        return rand.nextInt(9) + 1;
-    }
-
-    public void randomFillBoard() {
-        for (int i = 0; i < 9; i++) {
-            int column = generateSudokuFigures() - 1;
-
-            do {
-                board[i][column] = generateSudokuFigures();
-            } while (!viabilityTest(i, column));
-        }
-
-    }
-
-    public int getBoardValue(int i, int j) {
-        return board[i][j];
-    }
-
-    public boolean boardsNotEqual(SudokuBoard boardOne, SudokuBoard boardTwo) {
-        int equalFigures = 0;
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                if (boardOne.getBoardValue(i, j) == boardTwo.getBoardValue(i, j)) {
-                    equalFigures++;
-                }
-            }
-        }
-        return equalFigures != 81;
-    }
-}
 }
