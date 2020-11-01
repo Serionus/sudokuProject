@@ -1,10 +1,16 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class SudokuBoard {
 
     private final int[][] board = new int[9][9];
-    BacktrackingSudokuSolver solver = new BacktrackingSudokuSolver();
+    SudokuSolver solver;
+
+    public SudokuBoard(SudokuSolver solver) {
+        this.solver = solver;
+    }
 
     public int get(int x, int y) {
         return board[x][y];
@@ -16,33 +22,62 @@ public class SudokuBoard {
 
     public void solveGame() {
         emptyingBoard();
-        randomFillBoard();
+        randomFillBoard2();
         solver.solve(this);
     }
 
-    public void showBoard() {
+    @Override
+    public String toString() {
+
+        String result = "";
+
         for (int i = 0; i < 9; i++) {
             if (i % 3 == 0) {
-                System.out.println("-------------------------");
+                result += "-------------------------" + System.lineSeparator();
             }
             for (int j = 0; j < 9; j++) {
                 if (j % 3 == 0) {
-                    System.out.print("| ");
+                    result += "| ";
                 }
-                System.out.print(board[i][j] + " ");
+                result += board[i][j] + " ";
             }
-            System.out.print("|");
-            System.out.println();
+            result += "|" + System.lineSeparator();
         }
-        System.out.println("-------------------------");
+        result += "-------------------------" + System.lineSeparator();
+        return result;
+
     }
 
-    private int generateSudokuFigures() {
+    //nazwa zwyczajowa, wzięta z czasów kiedy to kolega Michał napisał pierwotną
+    //wersję metody randomfillboard, w sposób optymalny pod wzlędem ilości spędzonego
+    //przy kodowaniu czasu, ale niestety nie do końca optymalnym pod każdym innym względem.
+    //ku pamięci metoda ta została zapamiętana w komentarzu na końcu pliku. :)
+    private void randomFillBoard2() {
+        List<Integer> memory = new ArrayList<Integer>();
+        Random rand = new Random();
+        for (int i = 1; i < 10; i++) {
+            memory.add(i);
+        }
+        for (int i = 0; i < 9; i++) {
+            int randomNumber = rand.nextInt(memory.size());
+            board[i][rand.nextInt(9)] = memory.get(randomNumber);
+            memory.remove(randomNumber);
+        }
+    }
+
+    private void emptyingBoard() {
+        for (int[] row : board) {
+            Arrays.fill(row, 0);
+        }
+    }
+
+    /*
+         private int generateSudokuFigures() {
         Random rand = new Random();
         return rand.nextInt(9) + 1;
     }
 
-    public void randomFillBoard() {
+    private void randomFillBoard() {
         int [] randomizedNumbers = new int [9];
 
         for (int i = 0; i < 9; i++) {
@@ -56,8 +91,7 @@ public class SudokuBoard {
         }
     }
 
-
-    public boolean searchUsedFiguresArray(int [] array, int value) {
+    private boolean searchUsedFiguresArray(int [] array, int value) {
         for (int i = 0; i < 9; i++) {
             if (array[i] == value) {
                 return true;
@@ -65,10 +99,5 @@ public class SudokuBoard {
         }
         return false;
     }
-
-    public void emptyingBoard() {
-        for (int[] row : board) {
-            Arrays.fill(row, 0);
-        }
-    }
+    */
 }

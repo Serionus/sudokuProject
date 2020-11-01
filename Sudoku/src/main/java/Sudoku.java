@@ -1,12 +1,12 @@
 public class Sudoku {
     public static void main(String[] args) {
 
-        SudokuBoard board = new SudokuBoard();
-        board.showBoard();
-        board.randomFillBoard();
-        board.showBoard();
+        BacktrackingSudokuSolver solver = new BacktrackingSudokuSolver();
+        SudokuBoard board = new SudokuBoard(solver);
+
+        System.out.println(board.toString());
         board.solveGame();
-        board.showBoard();
+        System.out.println(board.toString());
 
     }
 }

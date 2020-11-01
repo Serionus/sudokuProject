@@ -3,8 +3,10 @@ public class BacktrackingSudokuSolverTest {
 
         @org.junit.jupiter.api.Test
         void fillBoard() {
-            SudokuBoard testBoardOne = new SudokuBoard();
+
             BacktrackingSudokuSolver testSolver = new BacktrackingSudokuSolver();
+            SudokuBoard testBoardOne = new SudokuBoard(testSolver);
+
             testBoardOne.solveGame();
             int [][] testCopyOne = new int [9][9];
             int [][] testCopyTwo = new int [9][9];
