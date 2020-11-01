@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SudokuBoard.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ProgramowanieKomponentowe1</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">SudokuBoard.java</span></div><h1>SudokuBoard.java</h1><pre class="source lang-java linenums">import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
+public class SudokuBoard {
+
+<span class="fc" id="L8">    private final int[][] board = new int[9][9];</span>
+    SudokuSolver solver;
+
+<span class="fc" id="L11">    public SudokuBoard(SudokuSolver solver) {</span>
+<span class="fc" id="L12">        this.solver = solver;</span>
+<span class="fc" id="L13">    }</span>
+
+    public int get(int x, int y) {
+<span class="fc" id="L16">        return board[x][y];</span>
+    }
+
+    public void set(int x, int y, int value) {
+<span class="fc" id="L20">        board[x][y] = value;</span>
+<span class="fc" id="L21">    }</span>
+
+    public void solveGame() {
+<span class="fc" id="L24">        emptyingBoard();</span>
+<span class="fc" id="L25">        randomFillBoard2();</span>
+<span class="fc" id="L26">        solver.solve(this);</span>
+<span class="fc" id="L27">    }</span>
+
+    @Override
+    public String toString() {
+
+<span class="nc" id="L32">        String result = &quot;&quot;;</span>
+
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        for (int i = 0; i &lt; 9; i++) {</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">            if (i % 3 == 0) {</span>
+<span class="nc" id="L36">                result += &quot;-------------------------&quot; + System.lineSeparator();</span>
+            }
+<span class="nc bnc" id="L38" title="All 2 branches missed.">            for (int j = 0; j &lt; 9; j++) {</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">                if (j % 3 == 0) {</span>
+<span class="nc" id="L40">                    result += &quot;| &quot;;</span>
+                }
+<span class="nc" id="L42">                result += board[i][j] + &quot; &quot;;</span>
+            }
+<span class="nc" id="L44">            result += &quot;|&quot; + System.lineSeparator();</span>
+        }
+<span class="nc" id="L46">        result += &quot;-------------------------&quot; + System.lineSeparator();</span>
+<span class="nc" id="L47">        return result;</span>
+
+    }
+
+    //nazwa zwyczajowa, wzięta z czasów kiedy to kolega Michał napisał pierwotną
+    //wersję metody randomfillboard, w sposób optymalny pod wzlędem ilości spędzonego
+    //przy kodowaniu czasu, ale niestety nie do końca optymalnym pod każdym innym względem.
+    //ku pamięci metoda ta została zapamiętana w komentarzu na końcu pliku. :)
+    private void randomFillBoard2() {
+<span class="fc" id="L56">        List&lt;Integer&gt; memory = new ArrayList&lt;Integer&gt;();</span>
+<span class="fc" id="L57">        Random rand = new Random();</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        for (int i = 1; i &lt; 10; i++) {</span>
+<span class="fc" id="L59">            memory.add(i);</span>
+        }
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        for (int i = 0; i &lt; 9; i++) {</span>
+<span class="fc" id="L62">            int randomNumber = rand.nextInt(memory.size());</span>
+<span class="fc" id="L63">            board[i][rand.nextInt(9)] = memory.get(randomNumber);</span>
+<span class="fc" id="L64">            memory.remove(randomNumber);</span>
+        }
+<span class="fc" id="L66">    }</span>
+
+    private void emptyingBoard() {
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        for (int[] row : board) {</span>
+<span class="fc" id="L70">            Arrays.fill(row, 0);</span>
+        }
+<span class="fc" id="L72">    }</span>
+
+    /*
+         private int generateSudokuFigures() {
+        Random rand = new Random();
+        return rand.nextInt(9) + 1;
+    }
+
+    private void randomFillBoard() {
+        int [] randomizedNumbers = new int [9];
+
+        for (int i = 0; i &lt; 9; i++) {
+            int column = generateSudokuFigures() - 1;
+            int value = generateSudokuFigures();
+            while (searchUsedFiguresArray(randomizedNumbers, value)) {
+                value = generateSudokuFigures();
+            }
+            board[i][column] = value;
+            randomizedNumbers[i] = value;
+        }
+    }
+
+    private boolean searchUsedFiguresArray(int [] array, int value) {
+        for (int i = 0; i &lt; 9; i++) {
+            if (array[i] == value) {
+                return true;
+            }
+        }
+        return false;
+    }
+    */
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
