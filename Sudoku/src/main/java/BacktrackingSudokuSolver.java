@@ -9,6 +9,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
                 oldBoard[i][j] = board.get(i, j);
             }
         }
+
         int k = 1;
 
         for (int i = 0; i < 9; i++) {

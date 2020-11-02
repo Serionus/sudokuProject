@@ -22,7 +22,7 @@ public class SudokuBoard {
 
     public void solveGame() {
         emptyingBoard();
-        randomFillBoard2();
+        randomFillBoard();
         solver.solve(this);
     }
 
@@ -48,11 +48,7 @@ public class SudokuBoard {
 
     }
 
-    //nazwa zwyczajowa, wzięta z czasów kiedy to kolega Michał napisał pierwotną
-    //wersję metody randomfillboard, w sposób optymalny pod wzlędem ilości spędzonego
-    //przy kodowaniu czasu, ale niestety nie do końca optymalnym pod każdym innym względem.
-    //ku pamięci metoda ta została zapamiętana w komentarzu na końcu pliku. :)
-    private void randomFillBoard2() {
+    private void randomFillBoard() {
         List<Integer> memory = new ArrayList<Integer>();
         Random rand = new Random();
         for (int i = 1; i < 10; i++) {
@@ -71,33 +67,5 @@ public class SudokuBoard {
         }
     }
 
-    /*
-         private int generateSudokuFigures() {
-        Random rand = new Random();
-        return rand.nextInt(9) + 1;
-    }
-
-    private void randomFillBoard() {
-        int [] randomizedNumbers = new int [9];
-
-        for (int i = 0; i < 9; i++) {
-            int column = generateSudokuFigures() - 1;
-            int value = generateSudokuFigures();
-            while (searchUsedFiguresArray(randomizedNumbers, value)) {
-                value = generateSudokuFigures();
-            }
-            board[i][column] = value;
-            randomizedNumbers[i] = value;
-        }
-    }
-
-    private boolean searchUsedFiguresArray(int [] array, int value) {
-        for (int i = 0; i < 9; i++) {
-            if (array[i] == value) {
-                return true;
-            }
-        }
-        return false;
-    }
-    */
 }
+
