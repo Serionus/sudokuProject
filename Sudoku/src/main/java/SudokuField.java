@@ -1,5 +1,5 @@
 public class SudokuField {
-    int value;
+    int value = 0;
 
     public int getValue() {
         return value;
