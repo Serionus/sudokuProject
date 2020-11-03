@@ -1,7 +1,5 @@
 package BoardElements;
 
-import BoardElements.SudokuElement;
-
 public class SudokuBox extends SudokuElement {
     public SudokuBox(SudokuField[] fields) {
         super(fields);

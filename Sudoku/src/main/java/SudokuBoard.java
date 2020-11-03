@@ -120,13 +120,12 @@ public class SudokuBoard {
         }
     }
     private void generateColumns() {
-        SudokuField[] chosenFields = new SudokuField[9];
 
         for (int i = 0; i < 9; i++) {
+            SudokuField[] chosenFields = new SudokuField[9];
             for (int j = 0; j < 9; j++) {
                 chosenFields[j] = fields[j][i];
             }
-
             columns[i] = new SudokuColumn(chosenFields);
         }
     }
@@ -142,10 +141,10 @@ public class SudokuBoard {
     }
 
     private void generateBoxes(){
-        SudokuField[] chosenFields = new SudokuField[9];
 
         for(int i = 0; i < 3; i++){
             for (int j = 0; j < 3; j++){
+                SudokuField[] chosenFields = new SudokuField[9];
                 for(int a = 0; a < 3; a++){
                     for(int b = 0 ;b < 3; b++){
                         chosenFields[a * 3 + b] = fields[i * 3 + a][j * 3 + b];

@@ -22,10 +22,10 @@ public class SudokuBoardTest {
             }
         }
         System.out.println(testBoard.toString());
-        System.out.println(testBoard.getRow(1));
+        System.out.println(testBoard.getRow(2));
         System.out.println(testBoard.getColumn(8));
 
-        System.out.println(testBoard.getBox(0, 0));
+        System.out.println(testBoard.getBox(1, 1));
     }
 
 

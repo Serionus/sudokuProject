@@ -59,40 +59,5 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         return result;
     }
 
-    public boolean viabilityTest(int row, int column, SudokuBoard board) {
 
-        for (int i = 0; i < 9; i++) {
-            if (i == row) {
-                continue;
-            }
-            if (board.get(row, column) == board.get(i, column)) {
-                return false;
-            }
-        }
-
-        for (int i = 0; i < 9; i++) {
-            if (i == column) {
-                continue;
-            }
-            if (board.get(row, column) == board.get(row, i)) {
-                return false;
-            }
-        }
-
-        int boxRow = row / 3;
-        int boxCol = column / 3;
-
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if ((boxRow * 3) + i == row && (boxCol * 3) + j == column) {
-                    continue;
-                }
-                if (board.get((boxRow * 3) + i, (boxCol * 3) + j) == board.get(row, column)) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
 }
