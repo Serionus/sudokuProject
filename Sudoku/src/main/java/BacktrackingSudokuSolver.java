@@ -1,12 +1,11 @@
-
 public class BacktrackingSudokuSolver implements SudokuSolver {
 
     @Override
     public void solve(SudokuBoard board) {
-        int[][] oldBoard = new int[9][9];
+        SudokuBoard oldBoard = new SudokuBoard(this);
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                oldBoard[i][j] = board.get(i, j);
+                oldBoard.set(i, j, board.get(i, j));
             }
         }
 
@@ -16,7 +15,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
 
             for (int j = 0; j < 9; j++) {
 
-                if (oldBoard[i][j] == 0) {
+                if (oldBoard.get(i, j) == 0) {
 
                     while (true) {
 
@@ -25,7 +24,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
 
                             int[] params = getPreviousCell(i, j);
 
-                            while (oldBoard[params[0]][params[1]] != 0) {
+                            while (oldBoard.get(params[0],params[1]) != 0) {
                                 params = getPreviousCell(params[0], params[1]);
                             }
 
@@ -37,7 +36,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
                         }
 
                         board.set(i, j, k);
-                        if (viabilityTest(i, j, board)) {
+                        if (board.getRow(i).verify() && board.getColumn(j).verify() && board.getBox(i/3, j/3).verify()) {
                             k = 1;
                             break;
                         }

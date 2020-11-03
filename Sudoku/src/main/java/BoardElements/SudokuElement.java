@@ -1,10 +1,12 @@
+package BoardElements;
+
 import java.util.ArrayList;
 import java.util.List;
 
 abstract public class SudokuElement {
-    SudokuField [] fields;
+    SudokuField[] fields;
 
-    public SudokuElement (SudokuField [] fields){
+    public SudokuElement (SudokuField[] fields){
         this.fields = fields;
     }
 
@@ -19,6 +21,10 @@ abstract public class SudokuElement {
         outer:
         for (SudokuField field : fields) {
             for (int i = 0; i < memory.size(); i++){
+                if(field.getValue() == 0){
+                    continue outer;
+                }
+
                 if (field.getValue() == memory.get(i)){
                     memory.remove(i);
                     continue outer;
@@ -28,4 +34,5 @@ abstract public class SudokuElement {
         }
         return true;
     }
+
 }

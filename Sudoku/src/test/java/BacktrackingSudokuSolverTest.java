@@ -1,7 +1,8 @@
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 public class BacktrackingSudokuSolverTest {
 
-        @org.junit.jupiter.api.Test
+        @Test
         void fillBoard() {
 
             BacktrackingSudokuSolver testSolver = new BacktrackingSudokuSolver();
@@ -10,11 +11,7 @@ public class BacktrackingSudokuSolverTest {
             testBoardOne.solveGame();
             int [][] testCopyOne = new int [9][9];
             int [][] testCopyTwo = new int [9][9];
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 9; j++) {
-                    assertTrue(testSolver.viabilityTest(i, j, testBoardOne));
-                }
-            }
+            assertTrue(testBoardOne.checkBoard());
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
                     testCopyOne[i][j] = testBoardOne.get(i, j);

@@ -1,5 +1,9 @@
+import BoardElements.SudokuBox;
+import BoardElements.SudokuColumn;
+import BoardElements.SudokuField;
+import BoardElements.SudokuRow;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -10,7 +14,6 @@ public class SudokuBoard {
     private final SudokuColumn[] columns = new SudokuColumn[9];
     private final SudokuRow[] rows = new SudokuRow[9];
     SudokuSolver solver;
-
 
     public SudokuBoard(SudokuSolver solver) {
         this.solver = solver;
@@ -53,9 +56,9 @@ public class SudokuBoard {
         }
         for(SudokuBox[] boxes2: boxes){
             for(SudokuBox box: boxes2){
-                //if(!box.verify()){
-                //    return false;
-                // }
+                if(!box.verify()){
+                    return false;
+                }
             }
         }
         return true;
@@ -88,9 +91,8 @@ public class SudokuBoard {
         return result;
 
     }
-
     private void randomFillBoard() {
-        List<Integer> memory = new ArrayList<Integer>();
+        List<Integer> memory = new ArrayList<>();
         Random rand = new Random();
         for (int i = 1; i < 10; i++) {
             memory.add(i);
@@ -125,12 +127,12 @@ public class SudokuBoard {
                 chosenFields[j] = fields[j][i];
             }
 
-            SudokuColumn column = new SudokuColumn(chosenFields);
-            columns[i] = column;
+            columns[i] = new SudokuColumn(chosenFields);
         }
     }
+
     private void generateRows(){
-        SudokuField[] chosenFields = new SudokuField[9];
+        SudokuField[] chosenFields;
 
         for(int i = 0; i < 9; i++){
             chosenFields = fields[i];
@@ -138,6 +140,7 @@ public class SudokuBoard {
             rows[i] = row;
         }
     }
+
     private void generateBoxes(){
         SudokuField[] chosenFields = new SudokuField[9];
 
@@ -145,7 +148,7 @@ public class SudokuBoard {
             for (int j = 0; j < 3; j++){
                 for(int a = 0; a < 3; a++){
                     for(int b = 0 ;b < 3; b++){
-                        chosenFields[a * b] = fields[i * 3 + a][j * 3 + b];
+                        chosenFields[a * 3 + b] = fields[i * 3 + a][j * 3 + b];
                     }
                 }
                 SudokuBox box = new SudokuBox(chosenFields);
@@ -155,4 +158,3 @@ public class SudokuBoard {
     }
 
 }
-

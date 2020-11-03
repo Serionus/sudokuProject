@@ -1,3 +1,5 @@
+package BoardElements;
+
 public class SudokuField {
     int value = 0;
 
