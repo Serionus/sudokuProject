@@ -1,8 +1,7 @@
-import BoardElements.SudokuBox;
-import BoardElements.SudokuColumn;
-import BoardElements.SudokuField;
-import BoardElements.SudokuRow;
-
+import boardelements.SudokuBox;
+import boardelements.SudokuColumn;
+import boardelements.SudokuField;
+import boardelements.SudokuRow;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -10,17 +9,21 @@ import java.util.Random;
 public class SudokuBoard {
 
     private final SudokuField[][] fields = new SudokuField[9][9];
+    /*
     private final SudokuBox[][] boxes = new SudokuBox[3][3];
     private final SudokuColumn[] columns = new SudokuColumn[9];
     private final SudokuRow[] rows = new SudokuRow[9];
+     */
     SudokuSolver solver;
 
     public SudokuBoard(SudokuSolver solver) {
         this.solver = solver;
         generateFields();
+        /*
         generateBoxes();
         generateColumns();
         generateRows();
+        */
     }
 
     public int get(int x, int y) {
@@ -31,32 +34,56 @@ public class SudokuBoard {
         fields[x][y].setValue(value);
     }
 
-    public SudokuBox getBox(int x, int y){
+    public SudokuBox getBox(int x, int y) {
+        SudokuField[] chosenFields = new SudokuField[9];
+        for (int a = 0; a < 3; a++) {
+            for (int b = 0; b < 3; b++) {
+                chosenFields[a * 3 + b] = fields[x * 3 + a][y * 3 + b];
+            }
+        }
+        return new SudokuBox(chosenFields);
+    }
+
+    public SudokuColumn getColumn(int x) {
+        SudokuField[] chosenFields = new SudokuField[9];
+        for (int j = 0; j < 9; j++) {
+            chosenFields[j] = fields[j][x];
+        }
+        return new SudokuColumn(chosenFields);
+
+    }
+
+    public SudokuRow getRow(int y) {
+        SudokuField[] chosenFields = fields[y];
+        return new SudokuRow(chosenFields);
+    }
+
+    /*
+    public SudokuBox getBox2(int x, int y){
         return boxes[x][y];
     }
-
-    public SudokuColumn getColumn(int x){
+    public SudokuColumn getColumn2(int x){
         return columns[x];
     }
-
-    public SudokuRow getRow(int y){
+    public SudokuRow getRow2(int y){
         return rows[y];
     }
+    */
 
-    public boolean checkBoard(){
-        for(SudokuColumn column: columns){
-            if(!column.verify()){
+    public boolean checkBoard() {
+        for (int i = 0; i < 9; i++) {
+            if (!getColumn(i).verify()) {
                 return false;
             }
         }
-        for(SudokuRow row: rows){
-            if(!row.verify()){
+        for (int i = 0; i < 9; i++) {
+            if (!getRow(i).verify()) {
                 return false;
             }
         }
-        for(SudokuBox[] boxes2: boxes){
-            for(SudokuBox box: boxes2){
-                if(!box.verify()){
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (!getBox(i, j).verify()) {
                     return false;
                 }
             }
@@ -72,7 +99,6 @@ public class SudokuBoard {
 
     @Override
     public String toString() {
-
         String result = "";
 
         for (int i = 0; i < 9; i++) {
@@ -91,6 +117,7 @@ public class SudokuBoard {
         return result;
 
     }
+
     private void randomFillBoard() {
         List<Integer> memory = new ArrayList<>();
         Random rand = new Random();
@@ -103,9 +130,10 @@ public class SudokuBoard {
             memory.remove(randomNumber);
         }
     }
-    private void emptyingBoard() {
+
+    public void emptyingBoard() {
         for (int i = 0; i < 9; i++) {
-            for (int j = 0; j <9; j++) {
+            for (int j = 0; j < 9; j++) {
                 fields[i][j].setValue(0);
             }
         }
@@ -119,17 +147,18 @@ public class SudokuBoard {
             }
         }
     }
-    private void generateColumns() {
 
+    /* private void generateColumns() {
+
+        SudokuField[] chosenFields;
         for (int i = 0; i < 9; i++) {
-            SudokuField[] chosenFields = new SudokuField[9];
+            chosenFields = new SudokuField[9];
             for (int j = 0; j < 9; j++) {
                 chosenFields[j] = fields[j][i];
             }
             columns[i] = new SudokuColumn(chosenFields);
         }
     }
-
     private void generateRows(){
         SudokuField[] chosenFields;
 
@@ -139,7 +168,6 @@ public class SudokuBoard {
             rows[i] = row;
         }
     }
-
     private void generateBoxes(){
 
         for(int i = 0; i < 3; i++){
@@ -155,5 +183,5 @@ public class SudokuBoard {
             }
         }
     }
-
+    */
 }

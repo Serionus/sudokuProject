@@ -1,4 +1,4 @@
-package BoardElements;
+package boardelements;
 
 public class SudokuField {
     int value = 0;

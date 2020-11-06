@@ -1,8 +1,8 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import BoardElements.SudokuColumn;
-import BoardElements.SudokuField;
-import BoardElements.SudokuRow;
+import boardelements.SudokuColumn;
+import boardelements.SudokuField;
+import boardelements.SudokuRow;
 import org.junit.jupiter.api.Test;
 
 public class SudokuElementTest {

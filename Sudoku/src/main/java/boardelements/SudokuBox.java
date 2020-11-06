@@ -1,4 +1,4 @@
-package BoardElements;
+package boardelements;
 
 public class SudokuBox extends SudokuElement {
     public SudokuBox(SudokuField[] fields) {
@@ -6,13 +6,13 @@ public class SudokuBox extends SudokuElement {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         String result = "";
-        for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 3; j++){
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 result += fields[i * 3 + j].getValue() + " ";
             }
-            result+= System.lineSeparator();
+            result += System.lineSeparator();
         }
         return result;
     }

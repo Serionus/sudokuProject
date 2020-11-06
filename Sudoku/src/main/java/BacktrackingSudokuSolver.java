@@ -36,7 +36,8 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
                         }
 
                         board.set(i, j, k);
-                        if (board.getRow(i).verify() && board.getColumn(j).verify() && board.getBox(i/3, j/3).verify()) {
+                        if (board.getRow(i).verify() && board.getColumn(j).verify()
+                                && board.getBox(i / 3, j / 3).verify()) {
                             k = 1;
                             break;
                         }
