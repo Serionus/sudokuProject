@@ -7,7 +7,7 @@ public class SudokuBoardTest {
         BacktrackingSudokuSolver testSolver = new BacktrackingSudokuSolver();
         SudokuBoard testBoard = new SudokuBoard(testSolver);
 
-        System.out.println(testBoard.toString());
+        //System.out.println(testBoard.toString());
 
         for(int i = 0 ; i < 9 ; i++){
             for(int j = 0; j < 9 ; j++){
@@ -22,7 +22,7 @@ public class SudokuBoardTest {
                 assertTrue(testBoard.get(i, j) < 10 && testBoard.get(i, j) > 0);
             }
         }
-        System.out.println(testBoard.toString());
+        //System.out.println(testBoard.toString());
     }
 
     @Test
@@ -59,5 +59,22 @@ public class SudokuBoardTest {
         assertFalse(testBoard.checkBoard());
     }
 
+    @Test
+    void checkListener(){
+        BacktrackingSudokuSolver testSolver = new BacktrackingSudokuSolver();
+        SudokuBoard testBoard = new SudokuBoard(testSolver);
+        System.out.println(testBoard.toString());
+        assertTrue(testBoard.isCorrect());
+        testBoard.setWantCheck(true);
+        for(int i = 0 ; i < 9 ; i ++){
+            testBoard.set(0, i, i+1);
+        }
+        System.out.println(testBoard.toString());
+        assertTrue(testBoard.isCorrect());
+
+        testBoard.set(0, 0, 2);
+        System.out.println(testBoard.toString());
+        assertTrue(testBoard.isCorrect());
+    }
 
 }

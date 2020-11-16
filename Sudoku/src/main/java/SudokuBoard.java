@@ -2,11 +2,13 @@ import boardelements.SudokuBox;
 import boardelements.SudokuColumn;
 import boardelements.SudokuField;
 import boardelements.SudokuRow;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class SudokuBoard {
+public class SudokuBoard implements PropertyChangeListener {
 
     private final SudokuField[][] fields = new SudokuField[9][9];
     /*
@@ -15,6 +17,8 @@ public class SudokuBoard {
     private final SudokuRow[] rows = new SudokuRow[9];
      */
     SudokuSolver solver;
+    boolean isCorrect = true;
+    boolean wantCheck = false;
 
     public SudokuBoard(SudokuSolver solver) {
         this.solver = solver;
@@ -142,10 +146,25 @@ public class SudokuBoard {
     private void generateFields() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                SudokuField field = new SudokuField();
+                SudokuField field = new SudokuField(this);
                 fields[i][j] = field;
             }
         }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (wantCheck) {
+            isCorrect = this.checkBoard();
+        }
+    }
+
+    public void setWantCheck(boolean wantCheck) {
+        this.wantCheck = wantCheck;
+    }
+
+    public boolean isCorrect() {
+        return isCorrect;
     }
 
     /* private void generateColumns() {

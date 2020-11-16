@@ -11,7 +11,7 @@ public class SudokuElementTest {
         SudokuField[] fields = new SudokuField[9];
 
         for (int i = 0; i < 9; i++){
-            SudokuField field = new SudokuField();
+            SudokuField field = new SudokuField(null);
             field.setValue(i + 1);
             fields[i] = field;
         }
