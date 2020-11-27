@@ -1,12 +1,15 @@
 package boardelements;
 
+import com.google.common.base.MoreObjects;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class SudokuElement {
-    SudokuField[] fields;
+    List<SudokuField> fields = Arrays.asList(new SudokuField[9]);
 
-    public SudokuElement(SudokuField[] fields) {
+    public SudokuElement(List<SudokuField> fields) {
         this.fields = fields;
     }
 
@@ -35,4 +38,27 @@ public abstract class SudokuElement {
         return true;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SudokuElement that = (SudokuElement) o;
+        return com.google.common.base.Objects.equal(fields, that.fields);
+    }
+
+    @Override
+    public int hashCode() {
+        return com.google.common.base.Objects.hashCode(fields);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("fields", fields)
+                .toString();
+    }
 }

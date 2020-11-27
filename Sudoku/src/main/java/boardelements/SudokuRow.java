@@ -1,16 +1,10 @@
 package boardelements;
 
+import java.util.List;
+
 public class SudokuRow extends SudokuElement {
-    public SudokuRow(SudokuField[] fields) {
+    public SudokuRow(List<SudokuField> fields) {
         super(fields);
     }
 
-    @Override
-    public String toString() {
-        String result = "";
-        for (SudokuField field: fields) {
-            result += field.getValue() + " ";
-        }
-        return result;
-    }
 }

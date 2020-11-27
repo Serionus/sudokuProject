@@ -1,5 +1,11 @@
 import static org.junit.jupiter.api.Assertions.*;
+
+import boardelements.SudokuField;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
 public class BacktrackingSudokuSolverTest {
 
         @Test
@@ -7,36 +13,28 @@ public class BacktrackingSudokuSolverTest {
 
             BacktrackingSudokuSolver testSolver = new BacktrackingSudokuSolver();
             SudokuBoard testBoardOne = new SudokuBoard(testSolver);
+            testBoardOne.setWantCheck(true);
 
             testBoardOne.solveGame();
-            int [][] testCopyOne = new int [9][9];
-            int [][] testCopyTwo = new int [9][9];
-            assertTrue(testBoardOne.checkBoard());
+
+            assertTrue(testBoardOne.isCorrect());
+
+            SudokuBoard testCopyOne = new SudokuBoard(testSolver);
+            SudokuBoard testCopyTwo = new SudokuBoard(testSolver);
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
-                    testCopyOne[i][j] = testBoardOne.get(i, j);
+                    testCopyOne.set(i, j, testBoardOne.get(i, j));
                 }
             }
+
             testBoardOne.solveGame();
+
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
-                    testCopyTwo[i][j] = testBoardOne.get(i, j);
+                    testCopyTwo.set(i, j, testBoardOne.get(i, j));
                 }
             }
-            assertTrue(boardsNotEqual(testCopyOne, testCopyTwo));
+            assertFalse(testCopyOne.equals(testCopyTwo));
         }
-
-        public boolean boardsNotEqual(int [][] boardOne, int [][] boardTwo) {
-            int equalFigures = 0;
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 9; j++) {
-                    if (boardOne[i][j] == boardTwo[i][j]) {
-                        equalFigures++;
-                    }
-                }
-            }
-            return equalFigures != 81;
-        }
-
 }
 
