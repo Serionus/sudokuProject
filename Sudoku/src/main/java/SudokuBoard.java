@@ -21,11 +21,6 @@ public class SudokuBoard implements PropertyChangeListener {
     public SudokuBoard(SudokuSolver solver) {
         this.solver = solver;
         generateFields();
-        /*
-        generateBoxes();
-        generateColumns();
-        generateRows();
-        */
     }
 
     public int get(int x, int y) {
@@ -89,25 +84,6 @@ public class SudokuBoard implements PropertyChangeListener {
         emptyingBoard();
         randomFillBoard();
         solver.solve(this);
-    }
-
-    public String boardLook() {
-        String result = "";
-        for (int i = 0; i < 9; i++) {
-            if (i % 3 == 0) {
-                result += "-------------------------" + System.lineSeparator();
-            }
-            for (int j = 0; j < 9; j++) {
-                if (j % 3 == 0) {
-                    result += "| ";
-                }
-                result += fields.get(i).get(j).getValue() + " ";
-            }
-            result += "|" + System.lineSeparator();
-        }
-        result += "-------------------------" + System.lineSeparator();
-        return result;
-
     }
 
     private boolean checkBoard() {
@@ -178,7 +154,4 @@ public class SudokuBoard implements PropertyChangeListener {
         return correct;
     }
 
-    public void setCorrect(boolean correct) {
-        this.correct = correct;
-    }
 }

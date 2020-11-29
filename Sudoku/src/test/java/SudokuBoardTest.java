@@ -1,9 +1,10 @@
-import static org.junit.jupiter.api.Assertions.*;
-
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 public class SudokuBoardTest {
     @Test
-    void solveGame() {
+    void solveGameTest() {
         BacktrackingSudokuSolver testSolver = new BacktrackingSudokuSolver();
         SudokuBoard testBoard = new SudokuBoard(testSolver);
         for(int i = 0 ; i < 9 ; i++){
@@ -23,15 +24,16 @@ public class SudokuBoardTest {
     }
 
     @Test
-    void checkListener(){
+    void listenerTest() {
         BacktrackingSudokuSolver testSolver = new BacktrackingSudokuSolver();
         SudokuBoard testBoard = new SudokuBoard(testSolver);
         assertTrue(testBoard.isCorrect());
 
         testBoard.setWantCheck(true);
+        assertTrue(testBoard.isWantCheck());
 
-        for(int i = 0 ; i < 9 ; i ++){
-            testBoard.set(0, i, i+1);
+        for (int i = 0; i < 9; i++) {
+            testBoard.set(0, i, i + 1);
         }
         assertTrue(testBoard.isCorrect());
 
@@ -40,16 +42,21 @@ public class SudokuBoardTest {
     }
 
     @Test
-    void equalsHashCodeTest() {
+    public void equalsContract() {
+        EqualsVerifier.simple()
+                .forClass(SudokuBoard.class).withPrefabValues(SudokuSolver.class,
+                new BacktrackingSudokuSolver(), new BacktrackingSudokuSolver())
+                .withIgnoredFields("solver")
+                .withIgnoredFields("correct")
+                .withIgnoredFields("wantCheck")
+                .verify();
+    }
+
+    @Test
+    void toStringTest() {
         BacktrackingSudokuSolver testSolver = new BacktrackingSudokuSolver();
         SudokuBoard testBoardOne = new SudokuBoard(testSolver);
-        SudokuBoard testBoardTwo = new SudokuBoard(testSolver);
-        testBoardOne.set(0,0,1);
-        testBoardTwo.set(0,0,1);
-        assertTrue(testBoardOne.equals(testBoardTwo));
-        testBoardTwo.set(8,8,1);
-        assertFalse(testBoardOne.equals(testBoardTwo));
-        assertTrue(testBoardOne.getBox(0,0).equals(testBoardTwo.getBox(0,0)));
-        assertFalse(testBoardOne.getBox(2,2).equals(testBoardTwo.getBox(2,2)));
+        assertTrue(testBoardOne.toString().length() != 0);
     }
+
 }

@@ -1,21 +1,19 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import boardelements.SudokuField;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class BacktrackingSudokuSolverTest {
 
         @Test
-        void fillBoard() {
+        void fillBoardTest() {
 
             BacktrackingSudokuSolver testSolver = new BacktrackingSudokuSolver();
             SudokuBoard testBoardOne = new SudokuBoard(testSolver);
             testBoardOne.setWantCheck(true);
 
             testBoardOne.solveGame();
+
+
 
             assertTrue(testBoardOne.isCorrect());
 
