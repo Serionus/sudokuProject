@@ -4,8 +4,9 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 
-public class SudokuField {
+public class SudokuField implements Serializable {
     int value = 0;
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 

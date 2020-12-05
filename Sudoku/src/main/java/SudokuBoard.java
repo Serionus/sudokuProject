@@ -6,12 +6,13 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class SudokuBoard implements PropertyChangeListener {
+public class SudokuBoard implements PropertyChangeListener, Serializable {
 
     private final List<List<SudokuField>> fields = Arrays.asList(new List[9]);
     private final SudokuSolver solver;
