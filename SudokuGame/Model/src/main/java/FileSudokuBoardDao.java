@@ -12,28 +12,26 @@ public class FileSudokuBoardDao implements Dao {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
 
     }
 
     @Override
-    public SudokuBoard read() {
+    public SudokuBoard read() throws IOException, ClassNotFoundException {
         try (ObjectInputStream sin = new ObjectInputStream(new FileInputStream(fileName))) {
             return (SudokuBoard) sin.readObject();
-        } catch (IOException | ClassNotFoundException ie) {
-            System.out.println("Błąd podczas odczytu z pliku: "
-                    + fileName + " obiektu typu SudokuBoard");
-            return null;
         }
     }
 
     @Override
-    public void write(Object object) {
+    public void write(Object object) throws IOException {
         try (ObjectOutputStream sout = new ObjectOutputStream(new FileOutputStream(fileName))) {
             sout.writeObject(object);
-        } catch (IOException ie) {
-            System.out.println("Błąd podczas zapisu do pliku: "
-                    + fileName + " obiektu typu SudokuBoard");
         }
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
     }
 }

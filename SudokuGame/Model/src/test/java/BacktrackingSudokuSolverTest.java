@@ -26,7 +26,6 @@ public class BacktrackingSudokuSolverTest {
             }
 
             testBoardOne.solveGame();
-
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
                     testCopyTwo.set(i, j, testBoardOne.get(i, j));
