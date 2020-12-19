@@ -1,7 +1,5 @@
-import boardelements.SudokuBox;
-import boardelements.SudokuColumn;
-import boardelements.SudokuField;
-import boardelements.SudokuRow;
+package sudoku;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import java.beans.PropertyChangeEvent;
@@ -11,11 +9,17 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import sudoku.boardelements.SudokuBox;
+import sudoku.boardelements.SudokuColumn;
+import sudoku.boardelements.SudokuField;
+import sudoku.boardelements.SudokuRow;
 
-public class SudokuBoard implements PropertyChangeListener, Serializable {
+public class SudokuBoard implements PropertyChangeListener, Serializable, Cloneable {
 
-    private final List<List<SudokuField>> fields = Arrays.asList(new List[9]);
-    private final SudokuSolver solver;
+
+
+    private List<List<SudokuField>> fields = Arrays.asList(new List[9]);
+    private SudokuSolver solver;
     private boolean correct = true;
     private boolean wantCheck = false;
 
@@ -143,6 +147,25 @@ public class SudokuBoard implements PropertyChangeListener, Serializable {
        }
     }
 
+    @Override
+    public SudokuBoard clone(){
+
+        try {
+            SudokuBoard result = (SudokuBoard) super.clone();
+            result.generateFields();
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    //result.fields.get(i).get(j) = this.fields.get(i).get(j).clone();
+                    result.fields.get(i).get(j).setValue(this.fields.get(i).get(j).getValue());
+                }
+            }
+            return result;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+
+    }
+
     public void setWantCheck(boolean wantCheck) {
         this.wantCheck = wantCheck;
     }
@@ -154,5 +177,7 @@ public class SudokuBoard implements PropertyChangeListener, Serializable {
     public boolean isCorrect() {
         return correct;
     }
+
+
 
 }

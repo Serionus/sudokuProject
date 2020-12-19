@@ -1,13 +1,12 @@
-package boardelements;
+package sudoku.boardelements;
 
 import com.google.common.base.MoreObjects;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
-public abstract class SudokuElement implements Serializable {
+public abstract class SudokuElement implements Serializable, Cloneable {
     List<SudokuField> fields = Arrays.asList(new SudokuField[9]);
 
     public SudokuElement(List<SudokuField> fields) {

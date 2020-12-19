@@ -1,6 +1,8 @@
+package sudoku;
+
+import sudoku.*;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
 import java.io.*;
 
 import static org.junit.jupiter.api.Assertions.*;

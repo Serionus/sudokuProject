@@ -1,3 +1,5 @@
+package sudoku;
+
 public class BacktrackingSudokuSolver implements SudokuSolver {
 
     @Override

@@ -1,3 +1,5 @@
+package sudoku;
+
 import java.io.Serializable;
 
 public interface SudokuSolver extends Serializable {

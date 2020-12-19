@@ -1,5 +1,9 @@
+package sudoku;
+
 import static org.junit.jupiter.api.Assertions.*;
 
+import sudoku.BacktrackingSudokuSolver;
+import sudoku.SudokuBoard;
 import org.junit.jupiter.api.Test;
 
 public class BacktrackingSudokuSolverTest {

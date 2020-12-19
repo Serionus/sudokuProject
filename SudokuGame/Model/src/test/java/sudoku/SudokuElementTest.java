@@ -1,6 +1,8 @@
+package sudoku;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-import boardelements.*;
+import sudoku.boardelements.*;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 
@@ -49,5 +51,23 @@ public class SudokuElementTest {
             fields.get(i).setValue(i + 1);
         }
         assertTrue(box.toString().length() != 0);
+    }
+
+    @Test
+    void cloneTest(){
+        List<SudokuField> testFields = Arrays.asList(new SudokuField[9]);
+        for (int i = 0; i < 9; i++) {
+            testFields.set(i, new SudokuField(null));
+            testFields.get(i).setValue(i + 1);
+        }
+        SudokuBox testBox = new SudokuBox(testFields);
+        SudokuBox clonedBox = (SudokuBox) testBox.clone();
+        assertTrue(testBox.equals(clonedBox));
+        testFields.get(0).setValue(5);
+        testBox = new SudokuBox(testFields);
+        System.out.println(testBox.toString());
+        System.out.println(clonedBox.toString());
+//        assertFalse(testBox.equals(clonedBox));
+
     }
 }

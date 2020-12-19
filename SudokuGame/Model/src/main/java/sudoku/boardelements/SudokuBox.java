@@ -1,4 +1,4 @@
-package boardelements;
+package sudoku.boardelements;
 
 import java.util.List;
 

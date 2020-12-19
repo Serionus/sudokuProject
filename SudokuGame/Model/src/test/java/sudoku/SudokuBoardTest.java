@@ -1,3 +1,8 @@
+package sudoku;
+
+import sudoku.BacktrackingSudokuSolver;
+import sudoku.SudokuBoard;
+import sudoku.SudokuSolver;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 

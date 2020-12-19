@@ -1,4 +1,4 @@
-package boardelements;
+package sudoku.boardelements;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -6,7 +6,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 
-public class SudokuField implements Serializable {
+public class SudokuField implements Serializable, Cloneable, Comparable<SudokuField> {
     int value = 0;
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
@@ -55,6 +55,38 @@ public class SudokuField implements Serializable {
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
+    }
+
+//    @Override
+//    public SudokuField clone() {
+//        try {
+//            return(SudokuField) super.clone();
+//        } catch (CloneNotSupportedException e) {
+//            throw new AssertionError();
+//        }
+//    }
+
+
+    @Override
+    public SudokuField clone(){
+        try {
+            SudokuField result =  (SudokuField) super.clone();
+            result.support = new PropertyChangeSupport(support);
+            return result;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
+
+    @Override
+    public int compareTo(SudokuField o) {
+        if(this.value == o.getValue()){
+            return 0;
+        } else if(this.value > o.getValue()) {
+            return 1;
+        } else {
+            return -1;
+        }
     }
 }
 
