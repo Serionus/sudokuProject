@@ -57,18 +57,8 @@ public class SudokuField implements Serializable, Cloneable, Comparable<SudokuFi
         support.addPropertyChangeListener(pcl);
     }
 
-//    @Override
-//    public SudokuField clone() {
-//        try {
-//            return(SudokuField) super.clone();
-//        } catch (CloneNotSupportedException e) {
-//            throw new AssertionError();
-//        }
-//    }
-
-
     @Override
-    public SudokuField clone(){
+    public SudokuField clone() {
         try {
             SudokuField result =  (SudokuField) super.clone();
             result.support = new PropertyChangeSupport(support);
@@ -80,9 +70,9 @@ public class SudokuField implements Serializable, Cloneable, Comparable<SudokuFi
 
     @Override
     public int compareTo(SudokuField o) {
-        if(this.value == o.getValue()){
+        if (this.value == o.getValue()) {
             return 0;
-        } else if(this.value > o.getValue()) {
+        } else if (this.value > o.getValue()) {
             return 1;
         } else {
             return -1;

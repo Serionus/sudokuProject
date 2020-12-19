@@ -13,16 +13,17 @@ public class SecondaryController {
     BacktrackingSudokuSolver solver;
     SudokuBoard sudokuBoard;
 
-    public void initData(SudokuBoard.difficulty difficulty){
+    public void initData(SudokuBoard.Difficulty difficulty){
         scene = App.getScene();
         activeField = (Button) scene.lookup("#f00");
         solver = new BacktrackingSudokuSolver();
         sudokuBoard = new SudokuBoard(solver, difficulty);
         sudokuBoard.solveGame();
-        sudokuBoard = sudokuBoard.diff.removeFields(sudokuBoard);
+        SudokuBoard savedBoard = sudokuBoard;
+        sudokuBoard = savedBoard.clone();
+        sudokuBoard = sudokuBoard.getDiff().removeFields(sudokuBoard);
         readFromBoard();
     }
-
 
     @FXML
     private void fieldAction(ActionEvent event) {

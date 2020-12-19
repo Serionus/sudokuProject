@@ -65,8 +65,8 @@ public class SudokuElementTest {
         assertTrue(testBox.equals(clonedBox));
         testFields.get(0).setValue(5);
         testBox = new SudokuBox(testFields);
-        System.out.println(testBox.toString());
-        System.out.println(clonedBox.toString());
+//        System.out.println(testBox.toString());
+//        System.out.println(clonedBox.toString());
 //        assertFalse(testBox.equals(clonedBox));
 
     }

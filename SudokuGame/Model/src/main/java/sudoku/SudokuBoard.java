@@ -15,11 +15,8 @@ import sudoku.boardelements.SudokuField;
 import sudoku.boardelements.SudokuRow;
 
 public class SudokuBoard implements PropertyChangeListener, Serializable, Cloneable {
-
-
-
     private List<List<SudokuField>> fields = Arrays.asList(new List[9]);
-    private SudokuSolver solver;
+    private final SudokuSolver solver;
     private boolean correct = true;
     private boolean wantCheck = false;
 
@@ -59,6 +56,10 @@ public class SudokuBoard implements PropertyChangeListener, Serializable, Clonea
     public SudokuRow getRow(int y) {
         List<SudokuField> chosenFields = fields.get(y);
         return new SudokuRow(chosenFields);
+    }
+
+    public Difficulty getDiff() {
+        return diff;
     }
 
     @Override
@@ -129,7 +130,7 @@ public class SudokuBoard implements PropertyChangeListener, Serializable, Clonea
         }
     }
 
-    private void generateFields() {
+    private void generateFields(List<List<SudokuField>> fields) {
         for (int i = 0; i < 9; i++) {
             List<SudokuField> row = Arrays.asList(new SudokuField[9]);
             for (int j = 0; j < 9; j++) {
@@ -148,22 +149,21 @@ public class SudokuBoard implements PropertyChangeListener, Serializable, Clonea
     }
 
     @Override
-    public SudokuBoard clone(){
-
+    public SudokuBoard clone() {
         try {
             SudokuBoard result = (SudokuBoard) super.clone();
-            result.generateFields();
+            List<List<SudokuField>> clonedFields = Arrays.asList(new List[9]);
+            generateFields(clonedFields);
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
-                    //result.fields.get(i).get(j) = this.fields.get(i).get(j).clone();
-                    result.fields.get(i).get(j).setValue(this.fields.get(i).get(j).getValue());
+                  clonedFields.get(i).set(j, fields.get(i).get(j).clone());
                 }
             }
+            result.fields = clonedFields;
             return result;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
-
     }
 
     public void setWantCheck(boolean wantCheck) {
@@ -177,7 +177,5 @@ public class SudokuBoard implements PropertyChangeListener, Serializable, Clonea
     public boolean isCorrect() {
         return correct;
     }
-
-
 
 }

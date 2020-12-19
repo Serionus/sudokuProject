@@ -7,11 +7,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-/**
- * JavaFX App
- */
 public class App extends Application {
-
     private static Scene scene;
     private static FXMLLoader primaryLoader;
     private static FXMLLoader secondaryLoader;
@@ -19,6 +15,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         primaryLoader = new FXMLLoader(App.class.getResource("primary.fxml"));
+        stage.setTitle("SudokuGame");
         secondaryLoader = new FXMLLoader(App.class.getResource("secondary.fxml"));
         scene = new Scene(primaryLoader.load(), 596, 508);
         stage.setScene(scene);

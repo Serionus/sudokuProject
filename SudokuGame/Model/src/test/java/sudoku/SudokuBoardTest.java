@@ -1,8 +1,5 @@
 package sudoku;
 
-import sudoku.BacktrackingSudokuSolver;
-import sudoku.SudokuBoard;
-import sudoku.SudokuSolver;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 
@@ -54,6 +51,7 @@ public class SudokuBoardTest {
                 .withIgnoredFields("solver")
                 .withIgnoredFields("correct")
                 .withIgnoredFields("wantCheck")
+                .withIgnoredFields("diff")
                 .verify();
     }
 
@@ -64,4 +62,36 @@ public class SudokuBoardTest {
         assertTrue(testBoardOne.toString().length() != 0);
     }
 
+    @Test
+    void cloneTest(){
+        BacktrackingSudokuSolver testSolver = new BacktrackingSudokuSolver();
+        SudokuBoard testBoard = new SudokuBoard(testSolver);
+        testBoard.solveGame();
+        SudokuBoard clonedBoard = testBoard.clone();
+        assertTrue(clonedBoard.equals(testBoard));
+        clonedBoard.set(0,0,0);
+        assertFalse(clonedBoard.equals(testBoard));
+    }
+
+    @Test
+    void difficultyTest(){
+        BacktrackingSudokuSolver testSoler = new BacktrackingSudokuSolver();
+        SudokuBoard testBoard = new SudokuBoard(testSoler, SudokuBoard.Difficulty.HARD);
+        testBoard.solveGame();
+        testBoard.getDiff().removeFields(testBoard);
+        assertEquals(30, emptyFields(testBoard));
+    }
+
+    public int emptyFields(SudokuBoard sb){
+        int counter = 0;
+        for (int i = 0; i < 9; i++){
+            for (int j = 0; j < 9; j++){
+                if (sb.get(i, j) == 0){
+                    counter++;
+                }
+            }
+        }
+        return counter;
+
+    }
 }
