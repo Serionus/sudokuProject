@@ -92,7 +92,7 @@ public class SudokuBoard implements PropertyChangeListener, Serializable, Clonea
         solver.solve(this);
     }
 
-    private boolean checkBoard() {
+    public boolean checkBoard() {
         for (int i = 0; i < 9; i++) {
             if (!getColumn(i).verify()) {
                 return false;

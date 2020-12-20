@@ -76,7 +76,7 @@ public class SudokuBoardTest {
     @Test
     void difficultyTest(){
         BacktrackingSudokuSolver testSoler = new BacktrackingSudokuSolver();
-        SudokuBoard testBoard = new SudokuBoard(testSoler, SudokuBoard.Difficulty.HARD);
+        SudokuBoard testBoard = new SudokuBoard(testSoler, SudokuBoard.Difficulty.JAK_KOMPOT);
         testBoard.solveGame();
         testBoard.getDiff().removeFields(testBoard);
         assertEquals(30, emptyFields(testBoard));
