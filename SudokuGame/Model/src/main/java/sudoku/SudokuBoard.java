@@ -15,9 +15,9 @@ import sudoku.boardelements.SudokuRow;
 public class SudokuBoard implements PropertyChangeListener, Serializable, Cloneable {
     private List<List<SudokuField>> fields = Arrays.asList(new List[9]);
     private final SudokuSolver solver;
+    private final Difficulty diff;
     private boolean correct = true;
     private boolean wantCheck = false;
-    public final Difficulty diff;
 
     public enum Difficulty {
         EASY(30),
@@ -46,7 +46,6 @@ public class SudokuBoard implements PropertyChangeListener, Serializable, Clonea
         }
     }
 
-
     public SudokuBoard(SudokuSolver solver, Difficulty diff) {
         this.solver = solver;
         generateFields(fields);
@@ -57,6 +56,79 @@ public class SudokuBoard implements PropertyChangeListener, Serializable, Clonea
         this.solver = solver;
         generateFields(fields);
         diff = Difficulty.EASY;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (wantCheck) {
+            correct = this.checkBoard();
+        }
+    }
+
+    @Override
+    public SudokuBoard clone() {
+        try {
+            SudokuBoard result = (SudokuBoard) super.clone();
+            List<List<SudokuField>> clonedFields = Arrays.asList(new List[9]);
+            generateFields(clonedFields);
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    clonedFields.get(i).set(j, fields.get(i).get(j).clone());
+                }
+            }
+            result.fields = clonedFields;
+            return result;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SudokuBoard board = (SudokuBoard) o;
+        return Objects.equal(fields, board.fields);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(fields);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("fields", fields)
+                .toString();
+    }
+
+    public void setWantCheck(boolean wantCheck) {
+        this.wantCheck = wantCheck;
+    }
+
+    public boolean isWantCheck() {
+        return wantCheck;
+    }
+
+    public boolean isCorrect() {
+        return correct;
+    }
+
+    public void setCorrect(boolean correct) {
+        this.correct = correct;
+    }
+
+    public Difficulty getDiff() {
+        return diff;
+    }
+
+    public SudokuSolver getSolver() {
+        return solver;
     }
 
     public int get(int x, int y) {
@@ -90,34 +162,6 @@ public class SudokuBoard implements PropertyChangeListener, Serializable, Clonea
     public SudokuRow getRow(int y) {
         List<SudokuField> chosenFields = fields.get(y);
         return new SudokuRow(chosenFields);
-    }
-
-    public Difficulty getDiff() {
-        return diff;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        SudokuBoard board = (SudokuBoard) o;
-        return Objects.equal(fields, board.fields);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(fields);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("fields", fields)
-                .toString();
     }
 
     public void solveGame() {
@@ -174,42 +218,4 @@ public class SudokuBoard implements PropertyChangeListener, Serializable, Clonea
             fields.set(i, row);
         }
     }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-       if (wantCheck) {
-           correct = this.checkBoard();
-       }
-    }
-
-    @Override
-    public SudokuBoard clone() {
-        try {
-            SudokuBoard result = (SudokuBoard) super.clone();
-            List<List<SudokuField>> clonedFields = Arrays.asList(new List[9]);
-            generateFields(clonedFields);
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 9; j++) {
-                  clonedFields.get(i).set(j, fields.get(i).get(j).clone());
-                }
-            }
-            result.fields = clonedFields;
-            return result;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
-    }
-
-    public void setWantCheck(boolean wantCheck) {
-        this.wantCheck = wantCheck;
-    }
-
-    public boolean isWantCheck() {
-        return wantCheck;
-    }
-
-    public boolean isCorrect() {
-        return correct;
-    }
-
 }

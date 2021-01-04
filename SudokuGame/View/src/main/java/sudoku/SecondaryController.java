@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 
@@ -25,10 +26,10 @@ public class SecondaryController {
     public void initData(SudokuBoard.Difficulty difficulty){
         scene = App.getScene();
         solver = new BacktrackingSudokuSolver();
-        sudokuBoard = new SudokuBoardDecorator(solver, difficulty);
+        sudokuBoard = new ChangebleFields(new SudokuBoard(solver, difficulty));
         sudokuBoard.solveGame();
         sudokuBoard = sudokuBoard.getDiff().removeFields(sudokuBoard);
-        ((SudokuBoardDecorator)sudokuBoard).markFieldsAsChangeable();
+        ((ChangebleFields)sudokuBoard).markChangeableFields();
         readFromBoard();
     }
 
@@ -97,7 +98,7 @@ public class SecondaryController {
                 }
 
                 //ustawianie stylu pól zmienialnych i niezmienialnych
-                if(((SudokuBoardDecorator)sudokuBoard).isChangeable(i, j)){
+                if(((ChangebleFields)sudokuBoard).isChangeable(i, j)){
                     button.setDisable(false);
                     button.setStyle("-fx-opacity:1;-fx-border-color:black;-fx-border-width:1 1 1 1;");
                 } else {
