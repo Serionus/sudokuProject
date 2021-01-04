@@ -21,7 +21,7 @@ public class PrimaryController {
 
     @FXML
     private void initialize(){
-        levelChooser.setValue("jak kompot");
+        levelChooser.setValue("Easy");
         levelChooser.setItems(difficulties);
     }
 
