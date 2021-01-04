@@ -5,10 +5,8 @@ import com.google.common.base.Objects;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+
 import sudoku.boardelements.SudokuBox;
 import sudoku.boardelements.SudokuColumn;
 import sudoku.boardelements.SudokuField;
@@ -19,10 +17,46 @@ public class SudokuBoard implements PropertyChangeListener, Serializable, Clonea
     private final SudokuSolver solver;
     private boolean correct = true;
     private boolean wantCheck = false;
+    public final Difficulty diff;
+
+    public enum Difficulty {
+        EASY(30),
+        MEDIUM(40),
+        HARD(50),
+        VERY_HARD(60);
+        int numberOfRemovedFields;
+
+        Difficulty(int number) {
+            numberOfRemovedFields = number;
+        }
+
+        public SudokuBoard removeFields(SudokuBoard board) {
+            int counter = numberOfRemovedFields;
+            Random rand = new Random();
+            while (counter != 0) {
+                int randRow = rand.nextInt(9);
+                int randCol = rand.nextInt(9);
+                if (board.fields.get(randRow).get(randCol).getValue() == 0) {
+                    continue;
+                }
+                board.fields.get(randRow).get(randCol).setValue(0);
+                counter--;
+            }
+            return board;
+        }
+    }
+
+
+    public SudokuBoard(SudokuSolver solver, Difficulty diff) {
+        this.solver = solver;
+        generateFields(fields);
+        this.diff = diff;
+    }
 
     public SudokuBoard(SudokuSolver solver) {
         this.solver = solver;
-        generateFields();
+        generateFields(fields);
+        diff = Difficulty.EASY;
     }
 
     public int get(int x, int y) {

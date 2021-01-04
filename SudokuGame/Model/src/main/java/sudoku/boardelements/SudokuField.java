@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class SudokuField implements Serializable, Cloneable, Comparable<SudokuField> {
     int value = 0;
-    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+    private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public SudokuField(PropertyChangeListener pcl) {
         addPropertyChangeListener(pcl);

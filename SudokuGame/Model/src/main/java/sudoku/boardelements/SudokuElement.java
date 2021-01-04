@@ -61,4 +61,17 @@ public abstract class SudokuElement implements Serializable, Cloneable {
                 .add("fields", fields)
                 .toString();
     }
+
+    @Override
+    public SudokuElement clone() {
+        try {
+            SudokuElement result = (SudokuElement) super.clone();
+            for (int i = 0; i < 9; i++) {
+                result.fields.get(i).setValue(this.fields.get(i).getValue());
+            }
+            return result;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }
