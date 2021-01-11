@@ -1,14 +1,28 @@
 package sudoku;
 
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.text.Text;
 
 public class PrimaryController {
-    ObservableList<String> difficulties = FXCollections.observableArrayList("Easy", "Medium", "Hard", "Very Hard");
+    ResourceBundle authorsBundle;
+    ResourceBundle languageBundle;
+    ObservableList<String> difficulties;
+
+
+    @FXML
+    private Text difficulty;
+
+    @FXML
+    private Label producers;
 
     @FXML
     private ChoiceBox levelChooser;
@@ -35,8 +49,7 @@ public class PrimaryController {
 
     @FXML
     private void initialize(){
-        levelChooser.setValue("Easy");
-        levelChooser.setItems(difficulties);
+        changeToPolish();
     }
 
     public static void main(String[] args) {

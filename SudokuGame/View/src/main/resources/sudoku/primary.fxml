@@ -17,18 +17,20 @@
          </font>
       </Text>
       <CubicCurve controlX1="206.99131774902344" controlX2="-205.00491333007812" controlY1="-7.249481201171875" controlY2="-167.76620483398438" endX="56.80760192871094" endY="-133.477294921875" fill="DODGERBLUE" startX="-216.3611297607422" startY="6.729705810546875" stroke="BLACK" />
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Difficulty chooser" wrappingWidth="116.07421875">
+      <Text fx:id="difficulty" strokeType="OUTSIDE" strokeWidth="0.0" text="Difficulty chooser" wrappingWidth="116.07421875">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
       <ChoiceBox fx:id="levelChooser" prefWidth="150.0" />
       <Button fx:id="primaryButton" onAction="#switchToSecondary" prefHeight="40.0" prefWidth="130.0" text="PLAY" />
-      <Label prefHeight="33.0" prefWidth="421.0" text="Producers: Antoni Karwowski 229908 &amp; Michał Gebel 229879">
+      <Label fx:id="producers" prefHeight="33.0" prefWidth="421.0" text="Producers: Antoni Karwowski 229908 &amp; Michał Gebel 229879">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
+      <Button fx:id="polish" mnemonicParsing="false" text="Polski" />
+      <Button fx:id="english" mnemonicParsing="false" text="English" />
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

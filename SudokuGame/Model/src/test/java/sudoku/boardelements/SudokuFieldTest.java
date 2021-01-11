@@ -40,6 +40,7 @@ class SudokuFieldTest {
         assertEquals(1, testField.compareTo(clonedField));
         testField.setValue(1);
         assertEquals(-1, testField.compareTo(clonedField));
+        assertEquals(-1, testField.compareTo(null));
     }
 
 }
