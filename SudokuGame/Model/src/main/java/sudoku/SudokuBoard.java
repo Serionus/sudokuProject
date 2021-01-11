@@ -5,8 +5,10 @@ import com.google.common.base.Objects;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
-import java.util.*;
-
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import sudoku.boardelements.SudokuBox;
 import sudoku.boardelements.SudokuColumn;
 import sudoku.boardelements.SudokuField;

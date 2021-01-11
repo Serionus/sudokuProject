@@ -7,11 +7,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
-
+import javafx.util.StringConverter;
+import javafx.util.converter.NumberStringConverter;
+import java.util.Locale;
 public class SecondaryController {
 
     Scene scene;
@@ -30,16 +32,17 @@ public class SecondaryController {
         sudokuBoard.solveGame();
         sudokuBoard = sudokuBoard.getDiff().removeFields(sudokuBoard);
         ((ChangebleFields)sudokuBoard).markChangeableFields();
-        readFromBoard();
+        exitButton.setText(bundle.getString("close"));
+        bidirectionalBinding();
     }
 
     @FXML
-    private void fieldAction(ActionEvent event) {
+    private void boardButtonAction(ActionEvent event) {
         activeField = (Button) event.getSource();
     }
 
     @FXML
-    private void setField(ActionEvent event){
+    private void keyboardButtonAction(ActionEvent event) {
         Button thisField = (Button) event.getSource();
         int x = Character.getNumericValue(activeField.getId().charAt(1));
         int y = Character.getNumericValue(activeField.getId().charAt(2));
@@ -73,7 +76,7 @@ public class SecondaryController {
         File selectedDirectory = fileChooser.showOpenDialog(scene.getWindow());
         dao = (FileSudokuBoardDao) SudokuBoardDaoFactory.createFileDao(selectedDirectory.getName());
         sudokuBoard = dao.read();
-        readFromBoard();
+        bidirectionalBinding();
 
     }
 
