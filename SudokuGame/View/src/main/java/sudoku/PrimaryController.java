@@ -34,20 +34,27 @@ public class PrimaryController {
     private Button primaryButton;
 
     @FXML
-    private void switchToSecondary() throws IOException {
+    private void switchToSecondary() throws IOException, NoSuchMethodException {
         SudokuBoard.Difficulty chosenDifficulty = SudokuBoard.Difficulty.EASY;
-        switch(levelChooser.getValue().toString()){
-            case "Easy": chosenDifficulty = SudokuBoard.Difficulty.EASY;
+
+        int difficultyId = 0;
+        for(int i = 0; i < difficulties.size(); i++){
+            if (difficulties.get(i).equals(levelChooser.getValue().toString())){
+                difficultyId = i;
+            }
+        }
+        switch(difficultyId){
+            case 0: chosenDifficulty = SudokuBoard.Difficulty.EASY;
                 break;
             case 1: chosenDifficulty = SudokuBoard.Difficulty.MEDIUM;
                 break;
-            case "Hard": chosenDifficulty = SudokuBoard.Difficulty.HARD;
+            case 2: chosenDifficulty = SudokuBoard.Difficulty.HARD;
                 break;
-            case "Very Hard": chosenDifficulty = SudokuBoard.Difficulty.VERY_HARD;
+            case 3: chosenDifficulty = SudokuBoard.Difficulty.VERY_HARD;
                 break;
 
         }
-        FXMLLoader secondaryLoader = new FXMLLoader(App.class.getResource("secondary.fxml"));
+        FXMLLoader secondaryLoader = new FXMLLoader(App.class.getResource("secondary.fxml"), languageBundle);
         App.setRoot(secondaryLoader);
         SecondaryController controller = secondaryLoader.getController();
         controller.initData(chosenDifficulty, languageBundle);
@@ -59,10 +66,11 @@ public class PrimaryController {
         changeToPolish();
     }
 
+    @FXML
     private void changeToPolish(){
         refresh(Locale.getDefault());
     }
-
+    @FXML
     private void changeToEnglish(){
         refresh(new Locale("en"));
     }
@@ -75,10 +83,12 @@ public class PrimaryController {
                                                                 languageBundle.getString("hard"),
                                                                 languageBundle.getString("ultraHard"));
 
-        levelChooser.setValue(difficulties.get(0));
         levelChooser.setItems(difficulties);
-
-        producers.setText( languageBundle.getString("producers") + " " + authorsBundle.getString("nameOne") + " " +
+        levelChooser.setValue(difficulties.get(0));
+        //difficulty.setText(languageBundle.getString("difficulty"));
+        primaryButton.setText(languageBundle.getString("play"));
+        producers.setText( languageBundle.getString("producers") + " " +
+                authorsBundle.getString("nameOne") + " " +
                 authorsBundle.getString("surnameOne") + " 229879 " +
                 authorsBundle.getString("nameTwo") + " " +
                 authorsBundle.getString("surnameTwo") + " 229908");

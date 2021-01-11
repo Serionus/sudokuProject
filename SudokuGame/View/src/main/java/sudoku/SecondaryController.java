@@ -2,6 +2,10 @@ package sudoku;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ResourceBundle;
+
+import javafx.beans.property.adapter.JavaBeanIntegerProperty;
+import javafx.beans.property.adapter.JavaBeanIntegerPropertyBuilder;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,17 +20,29 @@ import javafx.util.converter.NumberStringConverter;
 import java.util.Locale;
 public class SecondaryController {
 
+    @FXML
+    FileChooser fileChooser = new FileChooser();
+
+    @FXML
+    Button exitButton;
+    @FXML
+    Button loadButton;
+    @FXML
+    Button saveButton;
+    @FXML
+    Label savenameLine;
+
     Scene scene;
     Button activeField;
     BacktrackingSudokuSolver solver;
     SudokuBoard sudokuBoard;
     FileSudokuBoardDao dao;
+    ResourceBundle bundle = ResourceBundle.getBundle("SudokuBundle", Locale.getDefault());
 
-    @FXML
-    FileChooser fileChooser = new FileChooser();
 
-    public void initData(SudokuBoard.Difficulty difficulty){
+    public void initData(SudokuBoard.Difficulty difficulty, ResourceBundle bundle) throws NoSuchMethodException{
         scene = App.getScene();
+        this.bundle = bundle;
         solver = new BacktrackingSudokuSolver();
         sudokuBoard = new ChangebleFields(new SudokuBoard(solver, difficulty));
         sudokuBoard.solveGame();
@@ -44,14 +60,12 @@ public class SecondaryController {
     @FXML
     private void keyboardButtonAction(ActionEvent event) {
         Button thisField = (Button) event.getSource();
-        int x = Character.getNumericValue(activeField.getId().charAt(1));
-        int y = Character.getNumericValue(activeField.getId().charAt(2));
-        if(thisField.getText().equals("")){
-            sudokuBoard.set(x, y, 0);
-        }else {
-            sudokuBoard.set(x, y, Integer.parseInt(thisField.getText()));
+        try{
+            activeField.setText(thisField.getText());
+        } catch (NullPointerException antoni) {
+            System.out.println("eciepecie");
         }
-        readFromBoard();
+        checkCorrection();
     }
 
     @FXML
@@ -71,7 +85,7 @@ public class SecondaryController {
     }
 
     @FXML
-    private void load(ActionEvent event) throws ClassNotFoundException, IOException{
+    private void load(ActionEvent event) throws ClassNotFoundException, IOException, NoSuchMethodException{
         fileChooser.setTitle("Wybierz zapis");
         File selectedDirectory = fileChooser.showOpenDialog(scene.getWindow());
         dao = (FileSudokuBoardDao) SudokuBoardDaoFactory.createFileDao(selectedDirectory.getName());
@@ -82,23 +96,22 @@ public class SecondaryController {
 
     @FXML
     private void switchToPrimary() throws IOException {
-        FXMLLoader primaryLoader = new FXMLLoader(App.class.getResource("primary.fxml"));
+        FXMLLoader primaryLoader = new FXMLLoader(App.class.getResource("primary.fxml"), bundle);
         App.setRoot(primaryLoader);
     }
 
-    private void readFromBoard(){
-        boolean isCompleted = true;
-        //aktualizacja widoku na podstawie sudoku board
+    private void bidirectionalBinding() throws NoSuchMethodException{
+        JavaBeanIntegerProperty valueProperty;
+        JavaBeanIntegerPropertyBuilder builder = JavaBeanIntegerPropertyBuilder.create();
+        StringConverter<Number> converter = prepareConverter();
+
         for(int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
 
-                //przepisanie pól z sudokuBoard do widoku
+                //wiązanie dwukierunkowe
                 Button button = (Button) scene.lookup("#f" + i + j);
-                button.setText(Integer.toString(sudokuBoard.get(i, j)));
-                if(sudokuBoard.get(i, j) == 0){
-                    isCompleted = false;
-                    button.setText("");
-                }
+                valueProperty = builder.bean(sudokuBoard.getField(i, j)).name("value").build();
+                button.textProperty().bindBidirectional(valueProperty, converter);
 
                 //ustawianie stylu pól zmienialnych i niezmienialnych
                 if(((ChangebleFields)sudokuBoard).isChangeable(i, j)){
@@ -110,8 +123,17 @@ public class SecondaryController {
                 }
             }
         }
+    }
 
-        //sprawdzanie poprawności
+    public void checkCorrection(){
+        boolean isCompleted = true;
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                if(sudokuBoard.get(i, j) == 0){
+                    isCompleted = false;
+                }
+            }
+        }
         Pane pane = (Pane) scene.lookup("#pane");
         if(sudokuBoard.checkBoard() && isCompleted){
             pane.setStyle("-fx-background-color:#86AF49;");
@@ -122,5 +144,25 @@ public class SecondaryController {
         }
     }
 
+    private StringConverter<Number> prepareConverter(){
+        return new NumberStringConverter(){
+            @Override
+            public Number fromString(String value) {
+                if(value.equals("")){
+                    return 0;
+                } else{
+                    return super.fromString(value);
+                }
+            }
 
+            @Override
+            public String toString(Number value) {
+                if(value.equals(0)){
+                    return "";
+                } else{
+                    return super.toString(value);
+                }
+            }
+        };
+    }
 }

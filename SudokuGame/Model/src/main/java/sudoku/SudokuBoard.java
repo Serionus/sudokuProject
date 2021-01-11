@@ -141,6 +141,10 @@ public class SudokuBoard implements PropertyChangeListener, Serializable, Clonea
         fields.get(x).get(y).setValue(value);
     }
 
+    public SudokuField getField(int x, int y) {
+        return fields.get(x).get(y);
+    }
+
     public SudokuBox getBox(int x, int y) {
         List<SudokuField> chosenFields = Arrays.asList(new SudokuField[9]);
 
