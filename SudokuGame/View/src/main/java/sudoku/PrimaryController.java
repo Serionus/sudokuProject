@@ -52,6 +52,32 @@ public class PrimaryController {
         changeToPolish();
     }
 
+    private void changeToPolish(){
+        refresh(Locale.getDefault());
+    }
+
+    private void changeToEnglish(){
+        refresh(new Locale("en"));
+    }
+
+    private void refresh(Locale locale){
+        authorsBundle = ResourceBundle.getBundle("sudoku.Authors", locale);
+        languageBundle = ResourceBundle.getBundle("SudokuBundle", locale);
+        difficulties = FXCollections.observableArrayList(languageBundle.getString("easy"),
+                                                                languageBundle.getString("medium"),
+                                                                languageBundle.getString("hard"),
+                                                                languageBundle.getString("ultraHard"));
+
+        levelChooser.setValue(difficulties.get(0));
+        levelChooser.setItems(difficulties);
+
+        producers.setText( languageBundle.getString("producers") + " " + authorsBundle.getString("nameOne") + " " +
+                authorsBundle.getString("surnameOne") + " 229879 " +
+                authorsBundle.getString("nameTwo") + " " +
+                authorsBundle.getString("surnameTwo") + " 229908");
+
+    }
+
     public static void main(String[] args) {
         App.main(args);
     }
