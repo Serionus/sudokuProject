@@ -24,6 +24,7 @@ class FileSudokuBoardDaoTest {
             SudokuBoard testBoard3 = testDaoTwo.read();
         } catch (IOException e){
             System.out.println("Tak ma być");
+//            assertThrows((Dao<SudokuBoard> testDaoTwo = SudokuBoardDaoFactory.createFileDao("")));testDaoTwo.write(testBoard);
         }
     }
 

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -34,16 +33,16 @@ public class PrimaryController {
     private Button primaryButton;
 
     @FXML
-    private void switchToSecondary() throws IOException, NoSuchMethodException {
+    private void switchToSecondary() throws IOException, NoGetterOrSetterException {
         SudokuBoard.Difficulty chosenDifficulty = SudokuBoard.Difficulty.EASY;
 
         int difficultyId = 0;
-        for(int i = 0; i < difficulties.size(); i++){
-            if (difficulties.get(i).equals(levelChooser.getValue().toString())){
+        for (int i = 0; i < difficulties.size(); i++) {
+            if (difficulties.get(i).equals(levelChooser.getValue().toString())) {
                 difficultyId = i;
             }
         }
-        switch(difficultyId){
+        switch (difficultyId) {
             case 0: chosenDifficulty = SudokuBoard.Difficulty.EASY;
                 break;
             case 1: chosenDifficulty = SudokuBoard.Difficulty.MEDIUM;
@@ -52,9 +51,11 @@ public class PrimaryController {
                 break;
             case 3: chosenDifficulty = SudokuBoard.Difficulty.VERY_HARD;
                 break;
-
+            default:
+                break;
         }
-        FXMLLoader secondaryLoader = new FXMLLoader(App.class.getResource("secondary.fxml"), languageBundle);
+        FXMLLoader secondaryLoader = new FXMLLoader(App.class.getResource("secondary.fxml"),
+                                                                                languageBundle);
         App.setRoot(secondaryLoader);
         SecondaryController controller = secondaryLoader.getController();
         controller.initData(chosenDifficulty, languageBundle);
@@ -62,36 +63,37 @@ public class PrimaryController {
     }
 
     @FXML
-    private void initialize(){
+    private void initialize() {
         changeToPolish();
     }
 
     @FXML
-    private void changeToPolish(){
+    private void changeToPolish() {
         refresh(Locale.getDefault());
     }
+
     @FXML
-    private void changeToEnglish(){
+    private void changeToEnglish() {
         refresh(new Locale("en"));
     }
 
-    private void refresh(Locale locale){
+    private void refresh(Locale locale) {
         authorsBundle = ResourceBundle.getBundle("sudoku.Authors", locale);
         languageBundle = ResourceBundle.getBundle("SudokuBundle", locale);
         difficulties = FXCollections.observableArrayList(languageBundle.getString("easy"),
-                                                                languageBundle.getString("medium"),
-                                                                languageBundle.getString("hard"),
-                                                                languageBundle.getString("ultraHard"));
+                        languageBundle.getString("medium"),
+                        languageBundle.getString("hard"),
+                        languageBundle.getString("ultraHard"));
 
         levelChooser.setItems(difficulties);
         levelChooser.setValue(difficulties.get(0));
         //difficulty.setText(languageBundle.getString("difficulty"));
         primaryButton.setText(languageBundle.getString("play"));
-        producers.setText( languageBundle.getString("producers") + " " +
-                authorsBundle.getString("nameOne") + " " +
-                authorsBundle.getString("surnameOne") + " 229879 " +
-                authorsBundle.getString("nameTwo") + " " +
-                authorsBundle.getString("surnameTwo") + " 229908");
+        producers.setText(languageBundle.getString("producers") + " "
+                + authorsBundle.getString("nameOne") + " "
+                + authorsBundle.getString("surnameOne") + " 229879 "
+                + authorsBundle.getString("nameTwo") + " "
+                + authorsBundle.getString("surnameTwo") + " 229908");
 
     }
 

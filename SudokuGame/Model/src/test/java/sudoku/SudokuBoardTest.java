@@ -78,7 +78,7 @@ public class SudokuBoardTest {
         BacktrackingSudokuSolver testSoler = new BacktrackingSudokuSolver();
         SudokuBoard testBoard = new SudokuBoard(testSoler, SudokuBoard.Difficulty.EASY);
         testBoard.solveGame();
-        testBoard.getDiff().removeFields(testBoard);
+        testBoard.getDifficulty().removeFields(testBoard);
         assertEquals(30, emptyFields(testBoard));
     }
 

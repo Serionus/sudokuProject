@@ -19,9 +19,15 @@ public class FileSudokuBoardDao implements Dao {
     }
 
     @Override
-    public SudokuBoard read() throws IOException, ClassNotFoundException {
+    public SudokuBoard read() throws WrongFileChosenException {
         try (ObjectInputStream sin = new ObjectInputStream(new FileInputStream(fileName))) {
             return (SudokuBoard) sin.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            // 1
+            throw new WrongFileChosenException("Wybrano zla klase do zapisu", e);
+            // 2
+            // exception.initCause(new WrongClassUsedException("Wybrano zla klase do zapisu"));
+            // throw exception;
         }
     }
 
@@ -29,6 +35,8 @@ public class FileSudokuBoardDao implements Dao {
     public void write(Object object) throws IOException {
         try (ObjectOutputStream sout = new ObjectOutputStream(new FileOutputStream(fileName))) {
             sout.writeObject(object);
+        } catch (IOException e){
+            throw new WrongClassUsedException("Wybrano zla klase do zapisu", e);
         }
     }
 

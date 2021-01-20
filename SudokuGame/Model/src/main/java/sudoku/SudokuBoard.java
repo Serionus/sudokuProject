@@ -125,7 +125,7 @@ public class SudokuBoard implements PropertyChangeListener, Serializable, Clonea
         this.correct = correct;
     }
 
-    public Difficulty getDiff() {
+    public Difficulty getDifficulty() {
         return diff;
     }
 

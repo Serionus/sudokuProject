@@ -1,4 +1,4 @@
-package sudoku;
+package sudoku.boardelements;
 
 import static org.junit.jupiter.api.Assertions.*;
 
