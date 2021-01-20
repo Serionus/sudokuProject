@@ -1,8 +1,6 @@
 package sudoku;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -18,10 +16,6 @@ public class PrimaryController {
     ResourceBundle authorsBundle;
     ResourceBundle languageBundle;
     ObservableList<String> difficulties;
-
-
-    @FXML
-    private Text difficulty;
 
     @FXML
     private Label producers;

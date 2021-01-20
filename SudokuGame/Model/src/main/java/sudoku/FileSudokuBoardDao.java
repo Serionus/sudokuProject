@@ -31,8 +31,18 @@ public class FileSudokuBoardDao implements Dao {
         }
     }
 
+    //1
+    //jakis tam wyjatek
+    //spowodowany wrongclassusedexception
+    //spowodowany ioexception albo class not found exception
+
+    //2
+    //jakis tam wyjatek
+    //spowodowany ioexception
+    //spowodowany wrongclassusedexception
+
     @Override
-    public void write(Object object) throws IOException {
+    public void write(Object object) throws WrongClassUsedException {
         try (ObjectOutputStream sout = new ObjectOutputStream(new FileOutputStream(fileName))) {
             sout.writeObject(object);
         } catch (IOException e){
