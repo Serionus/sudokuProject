@@ -17,8 +17,11 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SecondaryController {
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     @FXML
     FileChooser fileChooser = new FileChooser();
@@ -60,13 +63,13 @@ public class SecondaryController {
     }
 
     @FXML
-    private void keyboardButtonAction(ActionEvent event) {
+    private void keyboardButtonAction(ActionEvent event) throws ButtonNotSelectedException {
         Button thisField = (Button) event.getSource();
         try {
             activeField.setText(thisField.getText());
-        } catch (NullPointerException antoni) {
-            antoni.initCause(new ButtonNotSelectedException());
-            throw antoni;
+        } catch (NullPointerException e) {
+            logger.info(bundle.getString("buttonException"));
+            throw new ButtonNotSelectedException(bundle.getString("buttonException"), e);
         }
         checkCorrection();
     }
@@ -81,7 +84,7 @@ public class SecondaryController {
     }
 
     @FXML
-    private void save(ActionEvent event) throws WrongClassUsedException {
+    private void save(ActionEvent event) throws FileCreateException {
         TextField newSave = (TextField) scene.lookup("#saveName");
         dao = (FileSudokuBoardDao) SudokuBoardDaoFactory.createFileDao(newSave.getText());
         dao.write(sudokuBoard);
@@ -98,7 +101,7 @@ public class SecondaryController {
     }
 
     @FXML
-    private void switchToPrimary() throws IOException {
+    private void switchToPrimary() throws CannotLoadFXMLException {
         FXMLLoader primaryLoader = new FXMLLoader(App.class.getResource("primary.fxml"), bundle);
         App.setRoot(primaryLoader);
     }
@@ -127,7 +130,8 @@ public class SecondaryController {
                                 + "-fx-opacity:1;-fx-border-color:black;-fx-border-width:1 1 1 1;");
                     }
                 } catch (NoSuchMethodException e) {
-                    throw new NoGetterOrSetterException("Nie ma mozliwosci stworzyc beana", e);
+                    logger.info(bundle.getString("beanException"));
+                    throw new NoGetterOrSetterException(bundle.getString("beanException"), e);
                 }
 
             }
@@ -146,11 +150,15 @@ public class SecondaryController {
         Pane pane = (Pane) scene.lookup("#pane");
         if (sudokuBoard.checkBoard() && isCompleted) {
             pane.setStyle("-fx-background-color:#86AF49;");
+            logger.info(bundle.getString("correctBoard"));
         } else if (sudokuBoard.checkBoard()) {
             pane.setStyle(null);
+            logger.info(bundle.getString("normalBoard"));
         } else {
             pane.setStyle("-fx-background-color:F08080;");
+            logger.info(bundle.getString("incorrectBoard"));
         }
+
     }
 
     private StringConverter<Number> prepareConverter() {

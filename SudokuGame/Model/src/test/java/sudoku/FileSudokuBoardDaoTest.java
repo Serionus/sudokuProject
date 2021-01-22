@@ -1,31 +1,30 @@
 package sudoku;
 
-import sudoku.*;
 import org.junit.jupiter.api.Test;
-
-import java.io.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileSudokuBoardDaoTest {
 
     @Test
-    void writeAndReadTest() throws Exception {
+    void writeAndReadTest() throws FileCreateException, WrongFileChosenException{
+//        System.out.println(zweryfikujPoprawnosc(16, 2, (int x, int y)-> x==y));
         SudokuSolver testSolver = new BacktrackingSudokuSolver();
-        SudokuBoard testBoard = new SudokuBoard(testSolver);
-        testBoard.solveGame();
-        try(Dao<SudokuBoard> testDaoOne = SudokuBoardDaoFactory.createFileDao("testPlik")){
-            testDaoOne.write(testBoard);
-            SudokuBoard testBoard2 = testDaoOne.read();
-            assertTrue(testBoard2.equals(testBoard));
-        }
-        try(Dao<SudokuBoard> testDaoTwo = SudokuBoardDaoFactory.createFileDao("")){
-            testDaoTwo.write(testBoard);
-            SudokuBoard testBoard3 = testDaoTwo.read()
-;        } catch (IOException e){
-            System.out.println("Tak ma być");
-//            assertThrows((Dao<SudokuBoard> testDaoTwo = SudokuBoardDaoFactory.createFileDao("")));testDaoTwo.write(testBoard);
-        }
+        SudokuBoard testBoardOne = new SudokuBoard(testSolver);
+        testBoardOne.solveGame();
+        FileSudokuBoardDao testDao = new FileSudokuBoardDao("TestSave");
+
+        testDao.write(testBoardOne);
+        SudokuBoard testBoardTwo = testDao.read();
+        assertTrue(testBoardTwo.equals(testBoardOne));
+
+//write exception test
+        FileSudokuBoardDao wrongDao = new FileSudokuBoardDao("");
+        assertThrows(FileCreateException.class, () -> wrongDao.write(testBoardOne));
+
+// read exception test
+        FileSudokuBoardDao wrongDaoTwo = new FileSudokuBoardDao("Empty");
+        assertThrows(WrongFileChosenException.class, wrongDaoTwo::read);
     }
 
     @Test

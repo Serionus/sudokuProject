@@ -42,11 +42,11 @@ public class FileSudokuBoardDao implements Dao {
     //spowodowany wrongclassusedexception
 
     @Override
-    public void write(Object object) throws WrongClassUsedException {
+    public void write(Object object) throws FileCreateException {
         try (ObjectOutputStream sout = new ObjectOutputStream(new FileOutputStream(fileName))) {
             sout.writeObject(object);
-        } catch (IOException e){
-            throw new WrongClassUsedException("Wybrano zla klase do zapisu", e);
+        } catch (IOException e) {
+            throw new FileCreateException(bundle.getString("classUsageException"), e);
         }
     }
 

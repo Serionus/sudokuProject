@@ -11,11 +11,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.text.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PrimaryController {
     ResourceBundle authorsBundle;
     ResourceBundle languageBundle;
     ObservableList<String> difficulties;
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     @FXML
     private Label producers;
@@ -50,10 +53,15 @@ public class PrimaryController {
         }
         FXMLLoader secondaryLoader = new FXMLLoader(App.class.getResource("secondary.fxml"),
                                                                                 languageBundle);
-        App.setRoot(secondaryLoader);
+        try{
+            App.setRoot(secondaryLoader);
+        } catch (IOException e) {
+            logger.info(languageBundle.getString("fxmlEception"));
+            throw new CannotLoadFXMLException(languageBundle.getString("fxmlException"), e);
+        }
         SecondaryController controller = secondaryLoader.getController();
-        controller.initData(chosenDifficulty, languageBundle);
 
+        controller.initData(chosenDifficulty, languageBundle);
     }
 
     @FXML
