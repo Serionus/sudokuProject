@@ -5,12 +5,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class FileSudokuBoardDao implements Dao {
     String fileName;
+    ResourceBundle bundle;
 
     public FileSudokuBoardDao(String fileName) {
         this.fileName = fileName;
+        bundle = ResourceBundle.getBundle("SudokuBundle", Locale.getDefault());
+    }
+
+    public FileSudokuBoardDao(String fileName, ResourceBundle bundle) {
+        this.fileName = fileName;
+        this.bundle = bundle;
     }
 
     @Override
@@ -23,11 +32,8 @@ public class FileSudokuBoardDao implements Dao {
         try (ObjectInputStream sin = new ObjectInputStream(new FileInputStream(fileName))) {
             return (SudokuBoard) sin.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            // 1
-            throw new WrongFileChosenException("Wybrano zla klase do zapisu", e);
-            // 2
-            // exception.initCause(new WrongClassUsedException("Wybrano zla klase do zapisu"));
-            // throw exception;
+            throw new WrongFileChosenException(bundle.getString("fileChooserException"), e);
+
         }
     }
 

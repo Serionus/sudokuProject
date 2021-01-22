@@ -24,9 +24,8 @@ public class App extends Application {
         stage.show();
     }
 
-    static void setRoot(FXMLLoader loader) throws IOException {
+    static void setRoot(FXMLLoader loader) throws IOException{
         scene.setRoot(loader.load());
-
     }
 
     static Scene getScene() {

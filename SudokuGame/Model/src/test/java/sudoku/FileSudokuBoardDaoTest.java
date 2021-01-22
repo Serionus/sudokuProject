@@ -6,6 +6,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FileSudokuBoardDaoTest {
 
+//    public interface dzialanieDwuargumentowe{
+//        public int wykonajDzialanie(int x, int y);
+//    }
+//
+//    public interface warunekPoprawnosci{
+//        public boolean sprawdzPoprawnosc(int x, int y);
+//    }
+//
+//    private int dzialaniePodstawowe(int x, int y, dzialanieDwuargumentowe dzialanie){
+//        return dzialanie.wykonajDzialanie(x, y);
+//    }
+//
+//    private boolean zweryfikujPoprawnosc(int x, int y, warunekPoprawnosci warunek){
+//        return warunek.sprawdzPoprawnosc(x, y);
+//    }
+
     @Test
     void writeAndReadTest() throws FileCreateException, WrongFileChosenException{
 //        System.out.println(zweryfikujPoprawnosc(16, 2, (int x, int y)-> x==y));

@@ -66,6 +66,7 @@ public class SecondaryController {
     private void keyboardButtonAction(ActionEvent event) throws ButtonNotSelectedException {
         Button thisField = (Button) event.getSource();
         try {
+            logMove(thisField);
             activeField.setText(thisField.getText());
         } catch (NullPointerException e) {
             logger.info(bundle.getString("buttonException"));
@@ -86,7 +87,7 @@ public class SecondaryController {
     @FXML
     private void save(ActionEvent event) throws FileCreateException {
         TextField newSave = (TextField) scene.lookup("#saveName");
-        dao = (FileSudokuBoardDao) SudokuBoardDaoFactory.createFileDao(newSave.getText());
+        dao = (FileSudokuBoardDao) SudokuBoardDaoFactory.createFileDao(newSave.getText(), bundle);
         dao.write(sudokuBoard);
     }
 
@@ -94,16 +95,24 @@ public class SecondaryController {
     private void load(ActionEvent event) throws WrongFileChosenException, NoGetterOrSetterException {
         fileChooser.setTitle("Wybierz zapis");
         File selectedDirectory = fileChooser.showOpenDialog(scene.getWindow());
-        dao = (FileSudokuBoardDao) SudokuBoardDaoFactory.createFileDao(selectedDirectory.getName());
+        try  {
+            dao = (FileSudokuBoardDao) SudokuBoardDaoFactory.createFileDao(selectedDirectory.getName());
+        } catch (NullPointerException e){
+            throw new WrongFileChosenException(bundle.getString("noNameException"), e);
+        }
         sudokuBoard = dao.read();
         bidirectionalBinding();
-
     }
 
     @FXML
     private void switchToPrimary() throws CannotLoadFXMLException {
         FXMLLoader primaryLoader = new FXMLLoader(App.class.getResource("primary.fxml"), bundle);
-        App.setRoot(primaryLoader);
+        try {
+            App.setRoot(primaryLoader);
+        } catch (IOException e) {
+            logger.info(bundle.getString("fxmlException"));
+            throw new CannotLoadFXMLException(bundle.getString("fxmlException"), e);
+        }
     }
 
     private void bidirectionalBinding() throws NoGetterOrSetterException {
@@ -181,5 +190,22 @@ public class SecondaryController {
                 }
             }
         };
+    }
+
+    private void logMove(Button thisField){
+        String x = activeField.getId().substring(1, 2);
+        String y = activeField.getId().substring(2, 3);
+        String previous = activeField.getText();
+        String result = thisField.getText();
+
+        if(previous.equals("")){
+            previous = "_";
+        }
+
+        if(result.equals("")){
+            result = "_";
+        }
+
+        logger.info("(" + x + ", " + y + ") " + previous + " -> " + result);
     }
 }

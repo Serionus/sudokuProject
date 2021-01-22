@@ -30,7 +30,7 @@ public class PrimaryController {
     private Button primaryButton;
 
     @FXML
-    private void switchToSecondary() throws IOException, NoGetterOrSetterException {
+    private void switchToSecondary() throws NoGetterOrSetterException, CannotLoadFXMLException {
         SudokuBoard.Difficulty chosenDifficulty = SudokuBoard.Difficulty.EASY;
 
         int difficultyId = 0;
