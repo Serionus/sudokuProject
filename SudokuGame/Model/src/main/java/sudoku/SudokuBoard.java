@@ -224,4 +224,24 @@ public class SudokuBoard implements PropertyChangeListener, Serializable, Clonea
             fields.set(i, row);
         }
     }
+
+    public Difficulty getDiff() {
+        return diff;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<SudokuField> getFields() {
+        return fields;
+    }
+
+    public void setFields(List<SudokuField> fields) {
+        this.fields = fields;
+    }
 }

@@ -2,6 +2,9 @@ package sudoku.boardelements;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import sudoku.SudokuBoard;
+
+import javax.persistence.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
@@ -77,6 +80,23 @@ public class SudokuField implements Serializable, Cloneable, Comparable<SudokuFi
             } else {
                 return -1;
             }
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
+    public PropertyChangeSupport getSupport() {
+        return support;
+    }
+
+    public void setSupport(PropertyChangeSupport support) {
+        this.support = support;
     }
 }
 

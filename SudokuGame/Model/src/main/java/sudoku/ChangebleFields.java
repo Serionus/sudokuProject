@@ -3,6 +3,7 @@ package sudoku;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class ChangebleFields extends SudokuBoardDecorator {
     private final List<int[]> changeableFields = new ArrayList<>();
 

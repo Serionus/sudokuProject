@@ -93,7 +93,7 @@ public class SecondaryController {
 
     @FXML
     private void load(ActionEvent event) throws WrongFileChosenException, NoGetterOrSetterException {
-        fileChooser.setTitle("Wybierz zapis");
+        fileChooser.setTitle(bundle.getString("chooseSave"));
         File selectedDirectory = fileChooser.showOpenDialog(scene.getWindow());
         try  {
             dao = (FileSudokuBoardDao) SudokuBoardDaoFactory.createFileDao(selectedDirectory.getName());
@@ -199,11 +199,11 @@ public class SecondaryController {
         String result = thisField.getText();
 
         if(previous.equals("")){
-            previous = "_";
+            previous = "0";
         }
 
         if(result.equals("")){
-            result = "_";
+            result = "0";
         }
 
         logger.info("(" + x + ", " + y + ") " + previous + " -> " + result);
