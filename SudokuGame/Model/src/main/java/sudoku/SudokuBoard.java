@@ -5,21 +5,27 @@ import com.google.common.base.Objects;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+
 import sudoku.boardelements.SudokuBox;
 import sudoku.boardelements.SudokuColumn;
 import sudoku.boardelements.SudokuField;
 import sudoku.boardelements.SudokuRow;
+import javax.persistence.*;
 
+@Entity
 public class SudokuBoard implements PropertyChangeListener, Serializable, Cloneable {
-    private List<List<SudokuField>> fields = Arrays.asList(new List[9]);
+
+    @OneToMany
+    private List<SudokuField> fields;
+
     private final SudokuSolver solver;
     private final Difficulty diff;
     private boolean correct = true;
     private boolean wantCheck = false;
+
+    @Id
+    private String name;
 
     public enum Difficulty {
         EASY(30),
@@ -38,10 +44,10 @@ public class SudokuBoard implements PropertyChangeListener, Serializable, Clonea
             while (counter != 0) {
                 int randRow = rand.nextInt(9);
                 int randCol = rand.nextInt(9);
-                if (board.fields.get(randRow).get(randCol).getValue() == 0) {
+                if (board.fields.get(randRow*9 + randCol).getValue() == 0) {
                     continue;
                 }
-                board.fields.get(randRow).get(randCol).setValue(0);
+                board.fields.get(randRow*9 + randCol).setValue(0);
                 counter--;
             }
             return board;
@@ -50,13 +56,13 @@ public class SudokuBoard implements PropertyChangeListener, Serializable, Clonea
 
     public SudokuBoard(SudokuSolver solver, Difficulty diff) {
         this.solver = solver;
-        generateFields(fields);
+        generateFields();
         this.diff = diff;
     }
 
     public SudokuBoard(SudokuSolver solver) {
         this.solver = solver;
-        generateFields(fields);
+        generateFields();
         diff = Difficulty.EASY;
     }
 
@@ -71,12 +77,11 @@ public class SudokuBoard implements PropertyChangeListener, Serializable, Clonea
     public SudokuBoard clone() {
         try {
             SudokuBoard result = (SudokuBoard) super.clone();
-            List<List<SudokuField>> clonedFields = Arrays.asList(new List[9]);
-            generateFields(clonedFields);
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 9; j++) {
-                    clonedFields.get(i).set(j, fields.get(i).get(j).clone());
-                }
+            List<SudokuField> clonedFields = new ArrayList<>();
+            for (int i = 0; i < 81; i++) {
+                SudokuField cloned = new SudokuField(result);
+                cloned.setValue(fields.get(i).getValue());
+                clonedFields.add(cloned);
             }
             result.fields = clonedFields;
             return result;
@@ -134,15 +139,15 @@ public class SudokuBoard implements PropertyChangeListener, Serializable, Clonea
     }
 
     public int get(int x, int y) {
-        return fields.get(x).get(y).getValue();
+        return fields.get(x*9 + y).getValue();
     }
 
     public void set(int x, int y, int value) {
-        fields.get(x).get(y).setValue(value);
+        fields.get(x * 9 + y).setValue(value);
     }
 
     public SudokuField getField(int x, int y) {
-        return fields.get(x).get(y);
+        return fields.get(x * 9 + y);
     }
 
     public SudokuBox getBox(int x, int y) {
@@ -151,22 +156,25 @@ public class SudokuBoard implements PropertyChangeListener, Serializable, Clonea
         for (int a = 0; a < 3; a++) {
             for (int b = 0; b < 3; b++) {
                 chosenFields.set(a * 3 + b, new SudokuField(this,
-                        fields.get(x * 3 + a).get(y * 3 + b).getValue()));
+                        fields.get((x * 3 + a)*9 + (y * 3 + b)).getValue()));
             }
         }
         return new SudokuBox(chosenFields);
     }
 
     public SudokuColumn getColumn(int x) {
-        List<SudokuField> chosenFields = Arrays.asList(new SudokuField[9]);
+        List<SudokuField> chosenFields = new ArrayList<>();
         for (int j = 0; j < 9; j++) {
-            chosenFields.set(j, new SudokuField(this, fields.get(j).get(x).getValue()));
+            chosenFields.add(fields.get(j*9 + x));
         }
         return new SudokuColumn(chosenFields);
     }
 
     public SudokuRow getRow(int y) {
-        List<SudokuField> chosenFields = fields.get(y);
+        List<SudokuField> chosenFields = new ArrayList<>();
+        for(int i = 0; i < 9; i++) {
+            chosenFields.add(fields.get(y*9 + i));
+        }
         return new SudokuRow(chosenFields);
     }
 
@@ -201,27 +209,23 @@ public class SudokuBoard implements PropertyChangeListener, Serializable, Clonea
         Random rand = new Random();
         int randRow = rand.nextInt(9);
         for (int i = 0; i < 9; i++) {
-            fields.get(randRow).get(i).setValue(i + 1);
+            fields.get(randRow*9 + i).setValue(i + 1);
         }
-        Collections.shuffle(fields.get(randRow));
+        Collections.shuffle(fields);
     }
 
     private void emptyingBoard() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                fields.get(i).get(j).setValue(0);
+                fields.get(i*9 + j).setValue(0);
             }
         }
     }
 
-    private void generateFields(List<List<SudokuField>> fields) {
-        for (int i = 0; i < 9; i++) {
-            List<SudokuField> row = Arrays.asList(new SudokuField[9]);
-            for (int j = 0; j < 9; j++) {
-                SudokuField field = new SudokuField(this);
-                row.set(j, field);
-            }
-            fields.set(i, row);
+    private void generateFields() {
+        fields = new ArrayList<>();
+        for (int i = 0; i < 81; i++) {
+            fields.add(new SudokuField(this));
         }
     }
 

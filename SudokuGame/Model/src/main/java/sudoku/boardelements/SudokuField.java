@@ -9,7 +9,14 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 
+@Entity
+
 public class SudokuField implements Serializable, Cloneable, Comparable<SudokuField> {
+
+    @Id
+    @GeneratedValue
+    private int id;
+
     int value = 0;
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
 

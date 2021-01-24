@@ -1,11 +1,15 @@
 package sudoku;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class ChangebleFields extends SudokuBoardDecorator {
+
+    @ElementCollection
     private final List<int[]> changeableFields = new ArrayList<>();
+
 
 
     public ChangebleFields(SudokuBoard board) {

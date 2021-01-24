@@ -41,6 +41,7 @@ public class SecondaryController {
     BacktrackingSudokuSolver solver;
     SudokuBoard sudokuBoard;
     FileSudokuBoardDao dao;
+    private JPASudokuBoardDao JPADao;
     ResourceBundle bundle = ResourceBundle.getBundle("SudokuBundle", Locale.getDefault());
 
 
@@ -87,8 +88,13 @@ public class SecondaryController {
     @FXML
     private void save(ActionEvent event) throws FileCreateException {
         TextField newSave = (TextField) scene.lookup("#saveName");
+
         dao = (FileSudokuBoardDao) SudokuBoardDaoFactory.createFileDao(newSave.getText(), bundle);
         dao.write(sudokuBoard);
+        JPADao = new JPASudokuBoardDao(newSave.getText());
+        JPADao.write(new SudokuBoard(solver));
+
+
     }
 
     @FXML
