@@ -3,6 +3,7 @@ package sudoku;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.io.*;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -29,13 +30,22 @@ public class JPASudokuBoardDao implements Dao<SudokuBoard>{
     }
 
     @Override
-    public SudokuBoard read() {
-        return repository.findByName(fileName);
+    public SudokuBoard read() throws WrongFileChosenException {
+        try {
+            return repository.findByName(fileName);
+        } catch (IllegalArgumentException e) {
+            throw new WrongFileChosenException(bundle.getString("fileChooserException"), e);
+
+        }
     }
 
     @Override
-    public void write(SudokuBoard board) {
+    public void write(SudokuBoard board) throws  FileCreateException {
+        try {
             repository.save(board, fileName);
+        } catch (IllegalArgumentException e) {
+            throw new FileCreateException(bundle.getString("classUsageException"), e);
+        }
     }
 
     @Override

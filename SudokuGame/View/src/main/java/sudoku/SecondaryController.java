@@ -49,8 +49,6 @@ public class SecondaryController {
     Button activeField;
     BacktrackingSudokuSolver solver;
     SudokuBoard sudokuBoard;
-    FileSudokuBoardDao dao;
-    private JPASudokuBoardDao JPADao;
     ResourceBundle bundle = ResourceBundle.getBundle("SudokuBundle", Locale.getDefault());
 
 
@@ -98,26 +96,17 @@ public class SecondaryController {
     private void save(ActionEvent event) throws FileCreateException {
         TextField newSave = (TextField) scene.lookup("#saveName");
 
-//        dao = (FileSudokuBoardDao) SudokuBoardDaoFactory.createFileDao(newSave.getText(), bundle);
-//        dao.write(sudokuBoard);
-        JPADao = new JPASudokuBoardDao(newSave.getText());
-        JPADao.write(sudokuBoard);
-
-
+        try (JPASudokuBoardDao JPADao = new JPASudokuBoardDao(newSave.getText())){
+            JPADao.write(sudokuBoard);
+        }
     }
 
     @FXML
     private void load(ActionEvent event) throws WrongFileChosenException, NoGetterOrSetterException {
-//        fileChooser.setTitle(bundle.getString("chooseSave"));
-//        File selectedDirectory = fileChooser.showOpenDialog(scene.getWindow());
-//        try  {
-//            dao = (FileSudokuBoardDao) SudokuBoardDaoFactory.createFileDao(selectedDirectory.getName());
-//        } catch (NullPointerException e){
-//            throw new WrongFileChosenException(bundle.getString("noNameException"), e);
-//        }
-//        sudokuBoard = dao.read();
-
-        sudokuBoard = JPADao.read();
+        TextField newSave = (TextField) scene.lookup("#saveName");
+        try (JPASudokuBoardDao JPADao = new JPASudokuBoardDao(newSave.getText())){
+            JPADao.read();
+        }
         bidirectionalBinding();
     }
 
