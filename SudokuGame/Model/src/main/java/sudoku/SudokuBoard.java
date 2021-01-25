@@ -2,25 +2,34 @@ package sudoku;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import sudoku.boardelements.SudokuBox;
+import sudoku.boardelements.SudokuColumn;
+import sudoku.boardelements.SudokuField;
+import sudoku.boardelements.SudokuRow;
+
+import javax.persistence.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.*;
 
-import sudoku.boardelements.SudokuBox;
-import sudoku.boardelements.SudokuColumn;
-import sudoku.boardelements.SudokuField;
-import sudoku.boardelements.SudokuRow;
-import javax.persistence.*;
-
 @Entity
 public class SudokuBoard implements PropertyChangeListener, Serializable, Cloneable {
 
-    @OneToMany
+
+    public SudokuBoard() { }
+
+    @Transient
+    private SudokuSolver solver;
+
+    @Enumerated(value = EnumType.STRING)
+    private Difficulty diff;
+
+    @OneToMany(cascade = CascadeType.ALL)
+//    @OrderColumn
     private List<SudokuField> fields;
 
-    private final SudokuSolver solver;
-    private final Difficulty diff;
+
     private boolean correct = true;
     private boolean wantCheck = false;
 

@@ -2,18 +2,27 @@ package sudoku;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+
 import javafx.beans.property.adapter.JavaBeanIntegerProperty;
 import javafx.beans.property.adapter.JavaBeanIntegerPropertyBuilder;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.geometry.Insets;
+import javafx.scene.Group;
+import javafx.scene.control.*;
 import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
@@ -89,24 +98,26 @@ public class SecondaryController {
     private void save(ActionEvent event) throws FileCreateException {
         TextField newSave = (TextField) scene.lookup("#saveName");
 
-        dao = (FileSudokuBoardDao) SudokuBoardDaoFactory.createFileDao(newSave.getText(), bundle);
-        dao.write(sudokuBoard);
+//        dao = (FileSudokuBoardDao) SudokuBoardDaoFactory.createFileDao(newSave.getText(), bundle);
+//        dao.write(sudokuBoard);
         JPADao = new JPASudokuBoardDao(newSave.getText());
-        JPADao.write(new SudokuBoard(solver));
+        JPADao.write(sudokuBoard);
 
 
     }
 
     @FXML
     private void load(ActionEvent event) throws WrongFileChosenException, NoGetterOrSetterException {
-        fileChooser.setTitle(bundle.getString("chooseSave"));
-        File selectedDirectory = fileChooser.showOpenDialog(scene.getWindow());
-        try  {
-            dao = (FileSudokuBoardDao) SudokuBoardDaoFactory.createFileDao(selectedDirectory.getName());
-        } catch (NullPointerException e){
-            throw new WrongFileChosenException(bundle.getString("noNameException"), e);
-        }
-        sudokuBoard = dao.read();
+//        fileChooser.setTitle(bundle.getString("chooseSave"));
+//        File selectedDirectory = fileChooser.showOpenDialog(scene.getWindow());
+//        try  {
+//            dao = (FileSudokuBoardDao) SudokuBoardDaoFactory.createFileDao(selectedDirectory.getName());
+//        } catch (NullPointerException e){
+//            throw new WrongFileChosenException(bundle.getString("noNameException"), e);
+//        }
+//        sudokuBoard = dao.read();
+
+        sudokuBoard = JPADao.read();
         bidirectionalBinding();
     }
 
@@ -151,6 +162,7 @@ public class SecondaryController {
 
             }
         }
+        checkCorrection();
     }
 
     public void checkCorrection() {

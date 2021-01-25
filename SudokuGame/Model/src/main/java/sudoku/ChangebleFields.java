@@ -1,5 +1,7 @@
 package sudoku;
 
+import org.checkerframework.checker.i18nformatter.qual.I18nFormat;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +12,8 @@ public class ChangebleFields extends SudokuBoardDecorator {
     @ElementCollection
     private final List<int[]> changeableFields = new ArrayList<>();
 
-
+    public ChangebleFields() {
+    }
 
     public ChangebleFields(SudokuBoard board) {
         super(board);

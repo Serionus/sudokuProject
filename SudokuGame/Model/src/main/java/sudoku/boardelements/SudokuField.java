@@ -2,7 +2,6 @@ package sudoku.boardelements;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import sudoku.SudokuBoard;
 
 import javax.persistence.*;
 import java.beans.PropertyChangeListener;
@@ -10,14 +9,19 @@ import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 
 @Entity
-
 public class SudokuField implements Serializable, Cloneable, Comparable<SudokuField> {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    public SudokuField(){
+
+    }
+
     int value = 0;
+
+    @Transient
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public SudokuField(PropertyChangeListener pcl) {

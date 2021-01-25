@@ -1,5 +1,8 @@
 package sudoku;
 
+
+import javax.persistence.Entity;
+
 public class BacktrackingSudokuSolver implements SudokuSolver {
 
     @Override

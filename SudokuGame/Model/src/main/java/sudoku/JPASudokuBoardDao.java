@@ -30,8 +30,7 @@ public class JPASudokuBoardDao implements Dao<SudokuBoard>{
 
     @Override
     public SudokuBoard read() {
-        return null;
-//        return repository.findByName(fileName);
+        return repository.findByName(fileName);
     }
 
     @Override
@@ -44,4 +43,7 @@ public class JPASudokuBoardDao implements Dao<SudokuBoard>{
         super.finalize();
     }
 
+    public SudokuBoardRepository getRepository() {
+        return repository;
+    }
 }
